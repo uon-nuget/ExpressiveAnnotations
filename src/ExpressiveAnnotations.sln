@@ -41,9 +41,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{19195F
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressiveAnnotation.NetCore", "ExpressiveAnnotation.NetCore\ExpressiveAnnotation.NetCore.csproj", "{73BCC53F-2AF9-4083-B07E-BA4FA95DEC6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressiveAnnotations.NetCore", "ExpressiveAnnotation.NetCore\ExpressiveAnnotations.NetCore.csproj", "{73BCC53F-2AF9-4083-B07E-BA4FA95DEC6B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressiveAnnotations.NetCoreSample", "ExpressiveAnnotations.NetCoreSample\ExpressiveAnnotations.NetCoreSample.csproj", "{210B52CF-01D2-46DD-8839-999390167B4F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{73BCC53F-2AF9-4083-B07E-BA4FA95DEC6B} = {73BCC53F-2AF9-4083-B07E-BA4FA95DEC6B}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
