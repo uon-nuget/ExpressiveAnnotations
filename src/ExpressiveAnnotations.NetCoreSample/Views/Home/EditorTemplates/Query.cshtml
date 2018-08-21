@@ -1,0 +1,248 @@
+﻿@using System.Threading
+@using ExpressiveAnnotations.MvcWebSample
+@using ExpressiveAnnotations.MvcWebSample.Misc
+@using MvcCheckBoxList.Model
+@model ExpressiveAnnotations.MvcWebSample.Models.Query
+
+@{ var lang = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName; }
+
+<ol>
+    <li>
+        <div>
+            @Html.CheckBoxFor(model => model.GoAbroad)
+            @Html.LabelFor(model => model.GoAbroad, new { @class = "cbox" })
+            @Html.ValidationMessageFor(model => model.GoAbroad)
+        </div>
+    </li>
+    <li>
+        <pre class="code">
+[Required]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.LabelFor(model => model.Age, new { @class = "inline prefix" })
+            @Html.DropDownListFor(model => model.Age, new SelectList(Model.Years, null), string.Empty)
+            @Html.ValidationMessageFor(model => model.Age)
+        </div>
+    </li>
+    <li>
+        <pre class="code">
+[RequiredIf("GoAbroad == true")]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.LabelFor(model => model.Identification, new { @class = "inline prefix" })
+            @Html.EnumDropDownListFor(model => model.Identification)
+            @Html.ValidationMessageFor(model => model.Identification)
+        </div>
+    </li>
+    <li>
+        <pre class="code">
+[RequiredIf("Identification == Document.ID"]
+[RequiredIf("Identification == Document.Passport"]
+[AssertThat("Identification == Document.ID ? IsRegexMatch(IdentificationValue, '^[a-zA-Z]{3}[0-9]{6}$') : true"]
+[AssertThat("Identification == Document.Passport ? IsRegexMatch(IdentificationValue, '^[a-zA-Z]{2}[0-9]{7}$') : true"]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.LabelFor(model => model.IdentificationValue, new { @class = "inline prefix" })
+            @Html.TextBoxFor(model => model.IdentificationValue)
+            @Html.ValidationMessageFor(model => model.IdentificationValue)
+        </div>
+    </li>
+    <li>
+        <div>
+            @Html.LabelFor(model => model.Country, new { @class = "inline prefix" })
+            @Html.DropDownListFor(model => model.Country, Model.Countries)
+            @Html.ValidationMessageFor(model => model.Country)
+        </div>
+    </li>
+    <li>
+        <div>
+            @Html.LabelFor(model => model.NextCountry, new { @class = "inline prefix" })
+            @Html.DropDownListFor(model => model.NextCountry, Model.Countries)
+            @Html.ValidationMessageFor(model => model.NextCountry)
+        </div>
+    </li>
+    <li>
+        <pre class="code">
+[Required]
+[AssertThat("Country != NextCountry ? StringArrayLength(KnownLanguages) > 1 : true")]
+[ValueParser("ArrayParser")]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.LabelFor(model => model.KnownLanguages, new {@class = "inline prefix"})
+            @Html.ListBoxFor(model => model.KnownLanguages, new SelectList(Model.Languages, null), string.Empty)
+            @Html.ValidationMessageFor(model => model.KnownLanguages)
+        </div>
+    </li>
+    <li>
+        @Html.DisplayFor(model => model.EarlyYears) @*hidden backing field storing JSON array of ints (IntArray template pointed by UIHint attrib)*@
+        <pre class="code">
+[RequiredIf(@@"GoAbroad == true
+              && (
+                     (NextCountry != 'Other' && NextCountry == Country)
+                     || (Age > 24 && 55 &ge; Age)
+                 )")]
+[RequiredIf("IntArrayContains(Age, [15, 16, 17])")] @*alternative: [RequiredIf("IntArrayContains(Age, EarlyYears)")]*@
+[AssertThat(@@"ReasonForTravel != 'John\'s cat named ""\\\'""\n (Backslash Quote)' && ReasonForTravel != SIMONS_CAT")]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.LabelFor(model => model.ReasonForTravel, new { @class = "inline prefix" })
+            @Html.TextAreaFor(model => model.ReasonForTravel)
+            @Html.ValidationMessageFor(model => model.ReasonForTravel)
+        </div>
+    </li>
+    <li>
+        @Html.HiddenFor(model => model.WeekPeriod) @*hidden backing field for WeekPeriod value to be extracted from*@
+        <pre class="code">
+[RequiredIf("GoAbroad == true")]
+[AssertThat("ReturnDate >= Today()", Priority = 1)]
+[AssertThat("ReturnDate >= Today() + WeekPeriod", Priority = 2)]
+[AssertThat("ReturnDate < AddYears(Today(), 1)")]
+[ValueParser("NonStandardDateParser")]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.LabelFor(model => model.ReturnDate, new { @class = "inline prefix" })
+            @Html.TextBoxFor(model => model.ReturnDate, new { @class = "date", @placeholder = Resources.SelectDate }) @Resources.LatestSuggestedReturnDate: @Model.LatestSuggestedReturnDate.ToString(lang == "pl" ? "yyyy-MM-dd" : "MM/dd/yyyy")
+            @Html.ValidationMessageFor(model => model.ReturnDate)
+        </div>
+    </li>
+    <li>
+        @Html.DisplayFor(x => x.LatestSuggestedReturnDate) @*hidden backing field storing date in RFC 2822 or ISO 8601 format (ISO8601Date template pointed by UIHint attrib)*@
+        <pre class="code">
+[RequiredIf("GoAbroad == true && ReturnDate > LatestSuggestedReturnDate", AllowEmptyStrings = true)]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.LabelFor(model => model.ReasonForLongTravel, new { @class = "inline prefix" })
+            @Html.TextAreaFor(model => model.ReasonForLongTravel)
+            @Html.ValidationMessageFor(model => model.ReasonForLongTravel)
+        </div>
+    </li>
+    <li>
+        <pre class="code">
+[RequiredIf("GoAbroad == true")]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.LabelFor(model => model.PoliticalStability, new { @class = "inline prefix" })
+            @Html.EnumDropDownListFor(model => model.PoliticalStability, true)
+            @Html.ValidationMessageFor(model => model.PoliticalStability)
+        </div>
+    </li>
+    <li>
+        <pre class="code">
+[AssertThat("(PoliticalStability == Stability.Low || PoliticalStability == Stability.Uncertain) ? AwareOfTheRisks == true : true")]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.CheckBoxFor(model => model.AwareOfTheRisks)
+            @Html.LabelFor(model => model.AwareOfTheRisks, new { @class = "cbox" })
+            @Html.ValidationMessageFor(model => model.AwareOfTheRisks)
+        </div>
+    </li>
+    <li>
+        <div>
+            @Html.LabelFor(model => model.SportType, new { @class = "inline prefix" })
+            @foreach (var item in Model.Sports)
+            {
+                <div class="inline">
+                    @Html.RadioButtonFor(model => model.SportType, item.Value) <label class="radio">@item.Text</label>
+                </div>
+            }
+            @Html.ValidationMessageFor(model => model.SportType)
+        </div>
+    </li>
+    <li>
+        <pre class="code">
+[RequiredIf("SportType == 'Extreme' || (SportType != 'None' && GoAbroad == true)")]
+[AssertThat("IsBloodType(Trim(BloodType))"]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.LabelFor(model => model.BloodType, new { @class = "inline prefix" })
+            @Html.TextBoxFor(model => model.BloodType)
+            @Html.ValidationMessageFor(model => model.BloodType)
+        </div>
+    </li>
+    <li>
+        @Html.EditorFor(model => model.ContactDetails)
+    </li>
+    <li>
+        <pre class="code">
+[AssertThat("AgreeForContact == true")]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            <div class="inline">
+                @Html.RadioButtonFor(model => model.AgreeForContact, true) <label class="radio">@Resources.SpamAllowed</label>
+            </div>
+            <div class="inline">
+                @Html.RadioButtonFor(model => model.AgreeForContact, false) <label class="radio">@Resources.SpamForbidden</label>
+            </div>
+            @Html.ValidationMessageFor(model => model.AgreeForContact)
+        </div>
+    </li>
+    <li>
+        <pre class="code">
+[RequiredIf(@@"AgreeForContact == true
+              && (ContactDetails.Email != null || ContactDetails.Phone != null)
+              && (ContactDetails.Addresses[0].Details != null || ContactDetails.Addresses[1].Details != null))]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.LabelFor(model => model.ImmediateContact, new { @class = "inline prefix" })
+            @Html.DropDownListFor(model => model.ImmediateContact, Model.Answers)
+            @Html.ValidationMessageFor(model => model.ImmediateContact)
+        </div>
+    </li>
+    <li>
+        <pre class="code">
+[AssertThat("FlightId != Guid('00000000-0000-0000-0000-000000000000') || !GoAbroad")]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.LabelFor(model => model.FlightId, new { @class = "inline prefix" })
+            @Html.DropDownListFor(model => model.FlightId, Model.Flights)
+            @Html.ValidationMessageFor(model => model.FlightId)
+        </div>
+    </li>
+    <li>
+        <pre class="code">
+[RequiredIf("GoAbroad == true")]
+[AssertThat("GoAbroad
+                 ? IntArrayLength(SelectedDonations) > 2
+                 : IntArrayLength(SelectedDonations) > 1", Priority = 1)]
+[AssertThat("SelectedDonations != null && IntArrayLength(SelectedDonations) > 0 
+                 ? SelectedCurrencies[0] || SelectedCurrencies[1]
+                 : true", Priority = 2")]
+[ValueParser("ArrayParser")]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.LabelFor(model => model.SelectedDonations, new { @class = "inline prefix" })
+            @Html.CheckBoxListFor(model => model.SelectedDonations, model => model.AvailableDonations, item => item, item => item, model => model.SelectedDonations, Position.Horizontal, model => new { @class = "cboxlist inline" })
+            &nbsp;
+            @Html.CheckBoxFor(model => model.SelectedCurrencies[0]) <span class="cbox inline">Bitcoin</span>
+            @Html.CheckBoxFor(model => model.SelectedCurrencies[1]) <span class="cbox inline">Ethereum</span>
+            @Html.ValidationMessageFor(model => model.SelectedDonations)
+        </div>
+    </li>
+    <li>
+        <pre class="code">
+[CustomRequiredIf("GoAbroad == true")]
+[CustomAssertThat("Length(コメント) > 1e1 - 1", Priority = 2)]
+[CustomAssertThat("Length(コメント) > 1e1 - 6", Priority = 1)]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.LabelFor(model => model.コメント, new { @class = "inline prefix" })
+            @Html.TextBoxFor(model => model.コメント, new { @id = "コメント" })
+            @Html.ValidationMessageFor(model => model.コメント)
+        </div>
+    </li>
+</ol>
