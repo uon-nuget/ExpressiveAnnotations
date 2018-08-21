@@ -5,7 +5,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace ExpressiveAnnotations.Attributes
+namespace ExpressiveAnnotations.NetCore.Attributes
 {
     /// <summary>
     ///     Validation attribute, executed for non-null annotated field, which indicates that assertion given 

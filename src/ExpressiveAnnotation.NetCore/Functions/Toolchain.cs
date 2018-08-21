@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
-using ExpressiveAnnotations.Analysis;
+using ExpressiveAnnotations.NetCore.Analysis;
 
-namespace ExpressiveAnnotations.Functions
+namespace ExpressiveAnnotations.NetCore.Functions
 {
     internal static class ParserHelper
     {
@@ -201,7 +201,7 @@ namespace ExpressiveAnnotations.Functions
         }
 
         /// <summary>
-        ///     Gets functions for the <see cref="ExpressiveAnnotations.Analysis.Parser" />.
+        ///     Gets functions for the <see cref="Parser" />.
         /// </summary>
         /// <returns>
         ///     Registered functions.

@@ -4,8 +4,9 @@
 
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using ExpressiveAnnotations.NetCore.Analysis;
 
-namespace ExpressiveAnnotations.Functions
+namespace ExpressiveAnnotations.NetCore.Functions
 {
     /// <summary>
     ///     Functions source.
@@ -13,7 +14,7 @@ namespace ExpressiveAnnotations.Functions
     public interface IFunctionsProvider
     {
         /// <summary>
-        ///     Gets functions for the <see cref="ExpressiveAnnotations.Analysis.Parser" />.
+        ///     Gets functions for the <see cref="Parser" />.
         /// </summary>
         /// <returns>
         ///     Registered functions.

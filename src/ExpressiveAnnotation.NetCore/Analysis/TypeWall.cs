@@ -5,7 +5,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace ExpressiveAnnotations.Analysis
+namespace ExpressiveAnnotations.NetCore.Analysis
 {
     /// <summary>
     ///     Demands types compatibility for operations.

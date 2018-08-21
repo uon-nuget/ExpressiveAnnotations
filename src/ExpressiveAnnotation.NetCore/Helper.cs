@@ -10,9 +10,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using ExpressiveAnnotations.Analysis;
+using ExpressiveAnnotations.NetCore.Analysis;
 
-namespace ExpressiveAnnotations
+namespace ExpressiveAnnotations.NetCore
 {
     internal interface ITypeProvider
     {

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace ExpressiveAnnotations.Analysis
+namespace ExpressiveAnnotations.NetCore.Analysis
 {
     /// <summary>
     ///     Adjusts types compatibility for operations.

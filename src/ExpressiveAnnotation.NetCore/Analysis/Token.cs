@@ -2,7 +2,7 @@
  * Copyright (c) 2014 Jarosław Waliszko
  * Licensed MIT: http://opensource.org/licenses/MIT */
 
-namespace ExpressiveAnnotations.Analysis
+namespace ExpressiveAnnotations.NetCore.Analysis
 {
     /// <summary>
     ///     Token definition.

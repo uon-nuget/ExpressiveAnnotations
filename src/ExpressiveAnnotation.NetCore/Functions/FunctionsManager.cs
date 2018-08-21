@@ -6,8 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using ExpressiveAnnotations.NetCore.Analysis;
 
-namespace ExpressiveAnnotations.Functions
+namespace ExpressiveAnnotations.NetCore.Functions
 {
     /// <summary>
     ///     Registers new functions of predefined signatures.
@@ -40,7 +41,7 @@ namespace ExpressiveAnnotations.Functions
         }
 
         /// <summary>
-        ///     Gets functions for the <see cref="ExpressiveAnnotations.Analysis.Parser" />.
+        ///     Gets functions for the <see cref="Parser" />.
         /// </summary>
         /// <returns>
         ///     Registered functions.

@@ -8,7 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace ExpressiveAnnotations.Analysis
+namespace ExpressiveAnnotations.NetCore.Analysis
 {
     /// <summary>
     ///     Performs the lexical analysis of a specified logical expression.

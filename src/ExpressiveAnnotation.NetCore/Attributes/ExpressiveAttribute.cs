@@ -8,10 +8,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
-using ExpressiveAnnotations.Analysis;
-using ExpressiveAnnotations.Functions;
+using ExpressiveAnnotations.NetCore.Analysis;
+using ExpressiveAnnotations.NetCore.Functions;
 
-namespace ExpressiveAnnotations.Attributes
+namespace ExpressiveAnnotations.NetCore.Attributes
 {
     /// <summary>
     ///     Base class for expressive validation attributes.
