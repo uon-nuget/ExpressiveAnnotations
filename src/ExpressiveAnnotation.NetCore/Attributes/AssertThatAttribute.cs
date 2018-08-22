@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ExpressiveAnnotations.NetCore.Attributes
 {
@@ -11,7 +12,7 @@ namespace ExpressiveAnnotations.NetCore.Attributes
     ///     Validation attribute, executed for non-null annotated field, which indicates that assertion given 
     ///     in logical expression has to be satisfied, for such a field to be considered as valid.
     /// </summary>
-    public sealed class AssertThatAttribute : ExpressiveAttribute
+    public sealed class AssertThatAttribute : ExpressiveAttribute, IClientModelValidator
     {
         private static string _defaultErrorMessage = "Assertion for {0} field is not satisfied by the following logic: {1}";
 
@@ -59,6 +60,17 @@ namespace ExpressiveAnnotations.NetCore.Attributes
             }
 
             return ValidationResult.Success;
+        }
+
+        public void AddValidation(ClientModelValidationContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            MergeAttribute(context.Attributes, "data-val", "true");
+            MergeAttribute(context.Attributes, "data-val-assertthat", DefaultErrorMessage);
         }
     }
 }

@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ExpressiveAnnotations.NetCore.Attributes
 {
@@ -11,7 +12,7 @@ namespace ExpressiveAnnotations.NetCore.Attributes
     ///     Validation attribute, executed for null-only annotated field, which indicates that such a field
     ///     is required to be non-null, when computed result of given logical expression is true.
     /// </summary>
-    public sealed class RequiredIfAttribute : ExpressiveAttribute
+    public sealed class RequiredIfAttribute : ExpressiveAttribute, IClientModelValidator
     {
         private static string _defaultErrorMessage = "The {0} field is required by the following logic: {1}";
 
@@ -82,6 +83,18 @@ namespace ExpressiveAnnotations.NetCore.Attributes
             if (value != null && PropertyType.IsNonNullableValueType())
                 throw new InvalidOperationException(
                     $"{nameof(RequiredIfAttribute)} has no effect when applied to a field of non-nullable value type '{PropertyType.FullName}'. Use nullable '{PropertyType.FullName}?' version instead, or switch to {nameof(AssertThatAttribute)} otherwise.");
+        }
+
+
+        public void AddValidation(ClientModelValidationContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            MergeAttribute(context.Attributes, "data-val", "true");
+            MergeAttribute(context.Attributes, "data-val-requiredif", DefaultErrorMessage);
         }
     }
 }
