@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ExpressiveAnnotations.NetCoreSample.Misc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -58,6 +59,8 @@ namespace ExpressiveAnnotations.NetCoreSample
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            CustomToolchain.Register();
         }
     }
 }
