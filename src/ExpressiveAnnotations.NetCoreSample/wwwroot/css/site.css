@@ -1,37 +1,289 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
-for details on configuring this project to bundle and minify static web assets. */
-body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿body {
+    font-family: monospace, "Segoe UI", "Segoe UI Light", Verdana, Helvetica, Sans-Serif;
+    font-size: .85em;
+    margin: 0;
+    padding: 0;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
+#body {
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.prefix {
+    width: 200px;
+}
+
+.date {
+    width: 85px !important;
+}
+
+.action {
+    color: #aaa;
+    cursor: pointer;
+    display: block;
+    font-size: 1.0em;
+    margin: 0;
+    margin: 0 0 0 -2px;
+    width: 115px;
+}
+
+select {
+    width: 212px;
+}
+
+.box {
+    height: 40px;
+    margin-bottom: 15px;
+    position: relative;
+    width: 100%;
+}
+
+.box-narrow {
+    margin-top: 20px;
+    position: relative;
+    width: 100%;
+}
+
+.box-small {
+    float: right;
+    font-size: 0.8em;
+    position: relative;
+    width: 55%;
+    z-index: 1;
+}
+
+    .box-small div {
+        text-align: right;
+        width: 100%;
+        padding-bottom: 2px;
+    }
+
+    .box-small input[type="checkbox"] {
+        margin: 0;
+        margin-bottom: -1px;
+        vertical-align: bottom;
+    }
+
+.left-corner {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+}
+
+.right-corner {
+    bottom: 0;
+    position: absolute;
+    right: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #000;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+h1 {
+    font-size: 1.2em;
+}
+
+.code {
+    background: linear-gradient(to right, whitesmoke, white);
+    display: none;
+    margin: 10px 0 2px -2px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.content-wrapper {
+    margin: 0 auto;
+    max-width: 1100px;
+    min-height: 750px; /* hack that prevents site from collapsing on reload (probably the reason is some floated elements do not add to the height in the container element) */
+}
+
+fieldset {
+    margin: 0;
     padding-left: 15px;
     padding-right: 15px;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+    fieldset legend {
+        font-size: 1.1em;
+    }
+
+    fieldset ol {
+        list-style: none;
+        padding: 0;
+    }
+
+        fieldset ol li {
+            padding: 1px;
+        }
+
+            fieldset ol li > div {
+                position: relative;
+            }
+
+li fieldset legend {
+    display: none;
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
+label {
+    display: block;
+    font-weight: 600;
+    vertical-align: baseline;
 }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
+.inline, .radio, .cbox {
+    display: inline-block;
+    vertical-align: top;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
+input, textarea {
+    background: #fff;
+    border: 1px solid #e2e2e2;
+    color: #333;
+}
+
+input {
+    width: 208px;
+}
+
+textarea {
+    max-width: 440px;
+    min-width: 208px;
+    overflow: hidden;
+    resize: both;
+    width: 440px;
+}
+
+    input:focus, textarea:focus {
+        border: 1px solid #7ac0da;
+    }
+
+input[type="checkbox"],
+input[type="radio"] {
+    background: transparent;
+    border: inherit;
+    margin-left: 0;
+    margin-right: 0;
+    width: auto;
+}
+
+input[type="submit"],
+input[type="button"],
+button {
+    background-color: #d3dce0;
+    border: 1px solid #787878;
+    cursor: pointer;
+    font-weight: 600;
+    margin-right: 8px;
+    padding: 5px;
+    width: auto;
+}
+
+.asterisk {
+    color: #ff0000;
+    vertical-align: top;
+    margin-left: -10px;
+    float: left;
+}
+
+.message-info {
+    border: 1px solid;
+    clear: both;
+    padding: 10px 20px;
+}
+
+.message-error {
+    clear: both;
+    color: #e80c4d;
+    font-weight: bold;
+}
+
+.message-success {
+    color: #51b421;
+    font-weight: bold;
+}
+
+.error {
+    color: #e80c4d;
+}
+
+.field-validation-error {
+    color: #e80c4d;
+    font-size: 0.8em;
+    font-weight: bold;
+    padding-left: 10px;
+    position: absolute;
+    top: 10%;
+}
+
+.input-validation-error {
+    outline: 1px solid #e80c4d;
+}
+
+input[type="radio"].input-validation-error,
+input[type="checkbox"].input-validation-error {
+    outline: 0 none;
+}
+
+.validation-summary-errors {
+    color: #e80c4d;
+    font-weight: bold;
+}
+
+.ctor {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+/********************
+*   Mobile Styles   *
+********************/
+
+@media only screen and (max-width: 850px) {
+    .inline {
+        display: block;
+    }
+
+    .cboxlist.inline {
+        display: inline;
+    }
+
+    .field-validation-error {
+        display: block;
+        padding-left: 0;
+        position: inherit;
+    }
+
+    .box-small {
         display: none;
     }
+
+    .box, fieldset {
+        display: block;
+    }
+
+    .left-corner, .right-corner {
+        position: inherit;
+    }
+
+    .right-corner {
+        float: right;
+    }
+
+    .prefix {
+        width: 440px;
+    }
+}
+
+/********************
+*   Browser fixes   *
+********************/
+
+.chrome input[type="text"] {
+    width: 210px;
 }
