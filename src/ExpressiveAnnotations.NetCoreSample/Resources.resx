@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddressDetailsFormatInvalid" xml:space="preserve">
+    <value>Address format should start from 'Street' prefix.</value>
+  </data>
+  <data name="AddressDetailsTooShort" xml:space="preserve">
+    <value>Provide more characters than '{StreetPrefix}' prefix only...</value>
+  </data>
+  <data name="Age" xml:space="preserve">
+    <value>Age</value>
+  </data>
+  <data name="AgreeForContact" xml:space="preserve">
+    <value>Agree for contact</value>
+  </data>
+  <data name="AgreeForContactRequired" xml:space="preserve">
+    <value>You have to authorize us to contact you.</value>
+  </data>
+  <data name="AssertionNotSatisfied" xml:space="preserve">
+    <value>Assertion for {0} field is not satisfied by the following logic: {1}</value>
+  </data>
+  <data name="AwareOfTheRisks" xml:space="preserve">
+    <value>I am aware of the possible risks</value>
+  </data>
+  <data name="AwareOfTheRisksRequired" xml:space="preserve">
+    <value>You are required to agree that you are aware of the risks of travel.</value>
+  </data>
+  <data name="BloodType" xml:space="preserve">
+    <value>Blood type</value>
+  </data>
+  <data name="BloodTypeInvalid" xml:space="preserve">
+    <value>Unknown blood type...</value>
+  </data>
+  <data name="BloodTypeRequired" xml:space="preserve">
+    <value>Blood type is required if you do extreme sports, or if you do any type of sport and plan to go abroad.</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="CustomizedAssertThatDefaultError" xml:space="preserve">
+    <value>Assertion for {0} field is not satisfied - text '{コメント}' is too short.</value>
+  </data>
+  <data name="CustomizedRequiredIfDefaultError" xml:space="preserve">
+    <value>The {0} field is conditionally required.</value>
+  </data>
+  <data name="DigitsOnlyAccepted" xml:space="preserve">
+    <value>Only digits are accepted.</value>
+  </data>
+  <data name="Donation" xml:space="preserve">
+    <value>Donation [USD]</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="EmailFormatInvalid" xml:space="preserve">
+    <value>Provided e-mail address has invalid format.</value>
+  </data>
+  <data name="EmailOrPhoneRequired" xml:space="preserve">
+    <value>You do not enter any contact information. At least e-mail or phone should be provided.</value>
+  </data>
+  <data name="Extreme" xml:space="preserve">
+    <value>Extreme</value>
+  </data>
+  <data name="FieldConditionallyRequired" xml:space="preserve">
+    <value>The {0} field is required by the following logic: {1}</value>
+  </data>
+  <data name="FieldRequired" xml:space="preserve">
+    <value>The {0} field is required.</value>
+  </data>
+  <data name="FlightId" xml:space="preserve">
+    <value>Flight identifier</value>
+  </data>
+  <data name="FlightIdentifierInvalid" xml:space="preserve">
+    <value>Provided flight identifier is invalid.</value>
+  </data>
+  <data name="France" xml:space="preserve">
+    <value>France</value>
+  </data>
+  <data name="FutureDateRequired" xml:space="preserve">
+    <value>We are afraid that going back to the past is not an option nowadays.</value>
+  </data>
+  <data name="Germany" xml:space="preserve">
+    <value>Germany</value>
+  </data>
+  <data name="GoAbroad" xml:space="preserve">
+    <value>I am going abroad</value>
+  </data>
+  <data name="High" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="HomeAddress" xml:space="preserve">
+    <value>Home address</value>
+  </data>
+  <data name="ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Identification" xml:space="preserve">
+    <value>Identification</value>
+  </data>
+  <data name="IdentificationValue" xml:space="preserve">
+    <value>Identification value</value>
+  </data>
+  <data name="IDNumberInvalid" xml:space="preserve">
+    <value>ID number invalid (3 letters and 6 digits expected)</value>
+  </data>
+  <data name="IDNumberMissing" xml:space="preserve">
+    <value>ID number missing</value>
+  </data>
+  <data name="ImmediateContact" xml:space="preserve">
+    <value>Immediate contact</value>
+  </data>
+  <data name="ImmediateContactRequired" xml:space="preserve">
+    <value>Shall we contact immidiately?</value>
+  </data>
+  <data name="JustAFewCharsMore" xml:space="preserve">
+    <value>Just a few characters more...</value>
+  </data>
+  <data name="LatestSuggestedReturnDate" xml:space="preserve">
+    <value>Latest suggested return</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="MoreThanAWeekRequired" xml:space="preserve">
+    <value>The period of stay should be at least a week.</value>
+  </data>
+  <data name="NextCountry" xml:space="preserve">
+    <value>Next country</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="NoMoreThanAYear" xml:space="preserve">
+    <value>The period of stay should be less than a year.</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="NotEnoughDonations" xml:space="preserve">
+    <value>More separate donations are required: if {GoAbroad:N} field is checked - at least 3, otherwise - at least 2.</value>
+  </data>
+  <data name="OfficeAddress" xml:space="preserve">
+    <value>Office address</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="Passport" xml:space="preserve">
+    <value>Passport</value>
+  </data>
+  <data name="PassportNumberInvalid" xml:space="preserve">
+    <value>Passport number invalid (2 letters and 7 digits expected)</value>
+  </data>
+  <data name="PassportNumberMissing" xml:space="preserve">
+    <value>Passport number missing</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="Poland" xml:space="preserve">
+    <value>Poland</value>
+  </data>
+  <data name="PoliticalStability" xml:space="preserve">
+    <value>Political stability</value>
+  </data>
+  <data name="RangeViolated" xml:space="preserve">
+    <value>Phone number should contain from 9 to 15 digits.</value>
+  </data>
+  <data name="ReasonForLongTravel" xml:space="preserve">
+    <value>Reasons for such a long travel</value>
+  </data>
+  <data name="ReasonForLongTravelRequired" xml:space="preserve">
+    <value>If you plan to stay abroad longer than one month from now, write down your reasons.</value>
+  </data>
+  <data name="ReasonForTravel" xml:space="preserve">
+    <value>Reasons for travel</value>
+  </data>
+  <data name="ReasonForTravelRequired" xml:space="preserve">
+    <value>If you plan to go abroad and you are between 25 and 55 or plan to visit the same foreign country twice, write down your reasons.</value>
+  </data>
+  <data name="ReasonForTravelRequiredForYouth" xml:space="preserve">
+    <value>If you are under 18 (indicated {Age} in {Age:N} field, yes - {Age:N} {Age}), give us a reason of your travel no matter where you go (BTW.  {Country}... nice choice).</value>
+  </data>
+  <data name="ReturnDate" xml:space="preserve">
+    <value>Return date</value>
+  </data>
+  <data name="SecretAnswerDetected" xml:space="preserve">
+    <value>Sorry, it is not a question about John's cat nor Simon's cat.</value>
+  </data>
+  <data name="SelectDate" xml:space="preserve">
+    <value>Select a date</value>
+  </data>
+  <data name="SpamAllowed" xml:space="preserve">
+    <value>I agree for contact</value>
+  </data>
+  <data name="SpamForbidden" xml:space="preserve">
+    <value>I do not agree for contact</value>
+  </data>
+  <data name="SportType" xml:space="preserve">
+    <value>Sports you like the most</value>
+  </data>
+  <data name="StreetPrefix" xml:space="preserve">
+    <value>Street</value>
+  </data>
+  <data name="Uncertain" xml:space="preserve">
+    <value>Uncertain</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="China" xml:space="preserve">
+    <value>China</value>
+  </data>
+  <data name="Israel" xml:space="preserve">
+    <value>Israel</value>
+  </data>
+  <data name="Japan" xml:space="preserve">
+    <value>Japan</value>
+  </data>
+  <data name="KnownLanguages" xml:space="preserve">
+    <value>Known languages</value>
+  </data>
+  <data name="LanguagesSelectionInsufficient" xml:space="preserve">
+    <value>More than one language must be known.</value>
+  </data>
+  <data name="SelectCurrency" xml:space="preserve">
+    <value>Select currency.</value>
+  </data>
+</root>
