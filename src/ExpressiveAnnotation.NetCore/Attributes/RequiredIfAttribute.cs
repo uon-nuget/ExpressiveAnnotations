@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using ExpressiveAnnotations.NetCore.Validators;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ExpressiveAnnotations.NetCore.Attributes
@@ -86,7 +87,7 @@ namespace ExpressiveAnnotations.NetCore.Attributes
         }
 
 
-        public override void AddValidation(ClientModelValidationContext context)
+        public void AddValidation(ClientModelValidationContext context)
         {
             if (context == null)
             {
@@ -96,7 +97,8 @@ namespace ExpressiveAnnotations.NetCore.Attributes
             MergeAttribute(context.Attributes, "data-val", "true");
             MergeAttribute(context.Attributes, "data-val-requiredif", DefaultErrorMessage);
 
-            base.AddValidation(context);
+            var validator = new RequiredIfValidator(context.ModelMetadata, this);
+            validator.AttachValidationRules();
         }
     }
 }

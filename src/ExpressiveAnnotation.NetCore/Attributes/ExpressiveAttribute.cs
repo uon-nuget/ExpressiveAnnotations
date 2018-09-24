@@ -326,18 +326,5 @@ namespace ExpressiveAnnotations.NetCore.Attributes
             attributes.Add(key, value);
             return true;
         }
-
-        public virtual void AddValidation(ClientModelValidationContext context)
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            //TODO: Merge in the common attributes here
-            MergeAttribute(context.Attributes, "data-val", "true");
-        }
-
-
     }
 }
