@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using ExpressiveAnnotations.NetCore.Analysis;
 using ExpressiveAnnotations.NetCore.Functions;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ExpressiveAnnotations.NetCore.Attributes
 {
@@ -325,5 +326,18 @@ namespace ExpressiveAnnotations.NetCore.Attributes
             attributes.Add(key, value);
             return true;
         }
+
+        public virtual void AddValidation(ClientModelValidationContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            //TODO: Merge in the common attributes here
+            MergeAttribute(context.Attributes, "data-val", "true");
+        }
+
+
     }
 }
