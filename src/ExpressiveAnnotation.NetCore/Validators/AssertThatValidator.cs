@@ -4,6 +4,7 @@
 
 using ExpressiveAnnotations.NetCore.Attributes;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ExpressiveAnnotations.NetCore.Validators
 {
@@ -29,9 +30,9 @@ namespace ExpressiveAnnotations.NetCore.Validators
         /// <returns>
         ///     void
         /// </returns>
-        public void AttachValidationRules()
+        public void AttachValidationRules(ClientModelValidationContext context, string defaultErrorMessage)
         {
-            AttachValidationRules("assertthat");
+            AttachValidationRules(context, "assertthat", defaultErrorMessage);
         }
     }
 }

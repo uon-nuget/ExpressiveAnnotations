@@ -70,11 +70,8 @@ namespace ExpressiveAnnotations.NetCore.Attributes
                 throw new ArgumentNullException(nameof(context));
             }
 
-            MergeAttribute(context.Attributes, "data-val", "true");
-            MergeAttribute(context.Attributes, "data-val-assertthat", DefaultErrorMessage);
-
             var validator = new AssertThatValidator(context.ModelMetadata, this);
-            validator.AttachValidationRules();
+            validator.AttachValidationRules(context, DefaultErrorMessage);
         }
     }
 }

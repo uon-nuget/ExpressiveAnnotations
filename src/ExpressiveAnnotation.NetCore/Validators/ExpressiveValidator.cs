@@ -12,6 +12,7 @@ using System.Threading;
 using ExpressiveAnnotations.NetCore.Attributes;
 using ExpressiveAnnotations.NetCore.Caching;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ExpressiveAnnotations.NetCore.Validators
 {
@@ -160,16 +161,24 @@ namespace ExpressiveAnnotations.NetCore.Validators
         /// <summary>
         ///     Attaches client validation rule to the context.
         /// </summary>
+        /// <param name="context">The Client Model Validation Context.</param>
         /// <param name="type">The validation type.</param>
+        /// <param name="defaultErrorMessage">The default Error Message.</param>
         /// <returns>
         ///     void
         /// </returns>
         /// <exception cref="System.ComponentModel.DataAnnotations.ValidationException"></exception>
-        protected void AttachValidationRules(string type)
+        protected void AttachValidationRules(ClientModelValidationContext context, string type, string defaultErrorMessage)
         {
             try
             {
                 //TODO: Rewrite this to attach validation rules to the context rather than returning rules as JSON
+
+
+                MergeAttribute(context.Attributes, "data-val", "true");
+                MergeAttribute(context.Attributes, $"data-val-{ProvideUniqueValidationType(type)}", defaultErrorMessage);
+
+
 
                 //var rule = new ModelClientValidationRule
                 //{
@@ -206,6 +215,18 @@ namespace ExpressiveAnnotations.NetCore.Validators
                     $"{GetType().Name}: collecting of client validation rules for {FieldName} field failed.", e);
             }
         }
+
+        protected bool MergeAttribute(IDictionary<string, string> attributes, string key, string value)
+        {
+            if (attributes.ContainsKey(key))
+            {
+                return false;
+            }
+
+            attributes.Add(key, value);
+            return true;
+        }
+
 
         /// <summary>
         ///     Provides unique validation type within current annotated field range, when multiple annotations are used (required for client-side).
