@@ -4,23 +4,31 @@
 
 using System;
 using System.Collections;
-using System.Web;
+using Microsoft.AspNetCore.Http;
 
 namespace ExpressiveAnnotations.NetCore.Caching
 {
     /// <summary>
     ///     Persists arbitrary key-value pairs for the lifespan of the current HTTP request.
     /// </summary>
-    internal static class RequestStorage
+    public static class RequestStorage
     {
+        private static IHttpContextAccessor _accessor;
+        public static void Configure(IHttpContextAccessor httpContextAccessor)
+        {
+            _accessor = httpContextAccessor;
+        }
+
+        public static HttpContext HttpContext => _accessor.HttpContext;
+
         private static IDictionary Items
         {
             get
             {
-                if (HttpContext.Current == null)
+                if (HttpContext == null)
                     throw new ApplicationException("HttpContext not available.");
-                return HttpContext.Current.Items; // location that could be used throughtout the entire HTTP request lifetime
-            }                                     // (contrary to a session, this one exists only within the period of a single request).
+                return HttpContext.Items as IDictionary;  // location that could be used throughtout the entire HTTP request lifetime
+            }                                             // (contrary to a session, this one exists only within the period of a single request).
         }
 
         public static T Get<T>(string key)
