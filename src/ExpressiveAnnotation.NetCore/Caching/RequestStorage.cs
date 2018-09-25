@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 
 namespace ExpressiveAnnotations.NetCore.Caching
@@ -21,13 +22,13 @@ namespace ExpressiveAnnotations.NetCore.Caching
 
         public static HttpContext HttpContext => _accessor.HttpContext;
 
-        private static IDictionary Items
+        private static IDictionary<object, object> Items
         {
             get
             {
                 if (HttpContext == null)
                     throw new ApplicationException("HttpContext not available.");
-                return HttpContext.Items as IDictionary;  // location that could be used throughtout the entire HTTP request lifetime
+                return HttpContext.Items; // location that could be used throughtout the entire HTTP request lifetime
             }                                             // (contrary to a session, this one exists only within the period of a single request).
         }
 
