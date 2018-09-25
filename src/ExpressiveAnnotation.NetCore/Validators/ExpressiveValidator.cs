@@ -172,42 +172,27 @@ namespace ExpressiveAnnotations.NetCore.Validators
         {
             try
             {
-                //TODO: Rewrite this to attach validation rules to the context rather than returning rules as JSON
-
-
                 MergeAttribute(context.Attributes, "data-val", "true");
                 MergeAttribute(context.Attributes, $"data-val-{ProvideUniqueValidationType(type)}", defaultErrorMessage);
-
-
-
-                //var rule = new ModelClientValidationRule
-                //{
-                //    ErrorMessage = FormattedErrorMessage,
-                //    ValidationType = ProvideUniqueValidationType(type)
-                //};
-
-                //rule.ValidationParameters.Add("expression", Expression.ToJson());
-
-                //Debug.Assert(FieldsMap != null);
-                //if (FieldsMap.Any())
-                //    rule.ValidationParameters.Add("fieldsmap", FieldsMap.ToJson());
-                //Debug.Assert(ConstsMap != null);
-                //if (ConstsMap.Any())
-                //    rule.ValidationParameters.Add("constsmap", ConstsMap.ToJson());
-                //Debug.Assert(EnumsMap != null);
-                //if (EnumsMap.Any())
-                //    rule.ValidationParameters.Add("enumsmap", EnumsMap.ToJson());
-                //Debug.Assert(MethodsList != null);
-                //if (MethodsList.Any())
-                //    rule.ValidationParameters.Add("methodslist", MethodsList.ToJson());
-                //Debug.Assert(ParsersMap != null);
-                //if (ParsersMap.Any())
-                //    rule.ValidationParameters.Add("parsersmap", ParsersMap.ToJson());
-                //Debug.Assert(ErrFieldsMap != null);
-                //if (ErrFieldsMap.Any())
-                //    rule.ValidationParameters.Add("errfieldsmap", ErrFieldsMap.ToJson());
-
-                //return rule;
+                MergeAttribute(context.Attributes, "data-val-expression", Expression.ToJson());
+                Debug.Assert(FieldsMap != null);
+                if (FieldsMap.Any())
+                    MergeAttribute(context.Attributes, "data-val-fieldsmap", FieldsMap.ToJson());
+                Debug.Assert(ConstsMap != null);
+                if (ConstsMap.Any())
+                    MergeAttribute(context.Attributes, "data-val-constsmap", ConstsMap.ToJson());
+                Debug.Assert(EnumsMap != null);
+                if (EnumsMap.Any())
+                    MergeAttribute(context.Attributes, "data-val-enumsmap", EnumsMap.ToJson());
+                Debug.Assert(MethodsList != null);
+                if (MethodsList.Any())
+                    MergeAttribute(context.Attributes, "data-val-methodslist", MethodsList.ToJson());
+                Debug.Assert(ParsersMap != null);
+                if (ParsersMap.Any())
+                    MergeAttribute(context.Attributes, "data-val-parsersmap", ParsersMap.ToJson());
+                Debug.Assert(ErrFieldsMap != null);
+                if (ErrFieldsMap.Any())
+                    MergeAttribute(context.Attributes, "data-val-errfieldsmap", ErrFieldsMap.ToJson());
             }
             catch (Exception e)
             {

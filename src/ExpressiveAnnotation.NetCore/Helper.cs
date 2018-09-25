@@ -7,10 +7,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
 using ExpressiveAnnotations.NetCore.Analysis;
+using Newtonsoft.Json;
 
 namespace ExpressiveAnnotations.NetCore
 {
@@ -91,6 +95,23 @@ namespace ExpressiveAnnotations.NetCore
             }
             return false;
         }
+
+
+        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // code that deals with disposables should be consistent (and classes should be resilient to multiple Dispose() calls)
+        public static string ToJson(this object data)
+        {
+            Debug.Assert(data != null);
+
+            var stringBuilder = new StringBuilder();
+            var jsonSerializer = new JsonSerializer();
+            using (var stringWriter = new StringWriter(stringBuilder))
+            using (var jsonTextWriter = new JsonTextWriter(stringWriter))
+            {
+                jsonSerializer.Serialize(jsonTextWriter, data);
+                return stringBuilder.ToString();
+            }
+        }
+
 
 
         public static object ExtractValue(object source, string property)

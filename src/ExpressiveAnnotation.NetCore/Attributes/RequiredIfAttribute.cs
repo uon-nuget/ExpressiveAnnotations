@@ -94,9 +94,6 @@ namespace ExpressiveAnnotations.NetCore.Attributes
                 throw new ArgumentNullException(nameof(context));
             }
 
-            MergeAttribute(context.Attributes, "data-val", "true");
-            MergeAttribute(context.Attributes, "data-val-requiredif", DefaultErrorMessage);
-
             var validator = new RequiredIfValidator(context.ModelMetadata, this);
             validator.AttachValidationRules(context, DefaultErrorMessage);
         }
