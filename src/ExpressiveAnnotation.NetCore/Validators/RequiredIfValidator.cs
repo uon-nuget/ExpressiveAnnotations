@@ -52,10 +52,7 @@ namespace ExpressiveAnnotations.NetCore.Validators
         public void AttachValidationRules(ClientModelValidationContext context, string defaultErrorMessage)
         {
             AttachValidationRules(context, "requiredif", defaultErrorMessage);
-
-            // TODO: Find an equivalent way in .net core version to attach AllowEmpty
-            // rule.ValidationParameters.Add("allowempty", AllowEmpty.ToJson());
-
+            MergeAttribute(context.Attributes, "data-val-allowempty", AllowEmpty.ToJson());
         }
     }
 }
