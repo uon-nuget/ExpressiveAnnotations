@@ -170,29 +170,32 @@ namespace ExpressiveAnnotations.NetCore.Validators
         /// <exception cref="System.ComponentModel.DataAnnotations.ValidationException"></exception>
         protected void AttachValidationRules(ClientModelValidationContext context, string type, string defaultErrorMessage)
         {
+            var errorMessage = !string.IsNullOrEmpty(FormattedErrorMessage) ? FormattedErrorMessage : defaultErrorMessage;
+            var uniqueValidationType = ProvideUniqueValidationType(type);
+
             try
             {
                 MergeAttribute(context.Attributes, "data-val", "true");
-                MergeAttribute(context.Attributes, $"data-val-{ProvideUniqueValidationType(type)}", defaultErrorMessage);
-                MergeAttribute(context.Attributes, "data-val-expression", Expression.ToJson());
+                MergeAttribute(context.Attributes, $"data-val-{uniqueValidationType}", errorMessage);
+                MergeAttribute(context.Attributes, $"data-val-{uniqueValidationType}-expression", Expression.ToJson());
                 Debug.Assert(FieldsMap != null);
                 if (FieldsMap.Any())
-                    MergeAttribute(context.Attributes, "data-val-fieldsmap", FieldsMap.ToJson());
+                    MergeAttribute(context.Attributes, $"data-val-{uniqueValidationType}-fieldsmap", FieldsMap.ToJson());
                 Debug.Assert(ConstsMap != null);
                 if (ConstsMap.Any())
-                    MergeAttribute(context.Attributes, "data-val-constsmap", ConstsMap.ToJson());
+                    MergeAttribute(context.Attributes, $"data-val-{uniqueValidationType}-constsmap", ConstsMap.ToJson());
                 Debug.Assert(EnumsMap != null);
                 if (EnumsMap.Any())
-                    MergeAttribute(context.Attributes, "data-val-enumsmap", EnumsMap.ToJson());
+                    MergeAttribute(context.Attributes, $"data-val-{uniqueValidationType}-enumsmap", EnumsMap.ToJson());
                 Debug.Assert(MethodsList != null);
                 if (MethodsList.Any())
-                    MergeAttribute(context.Attributes, "data-val-methodslist", MethodsList.ToJson());
+                    MergeAttribute(context.Attributes, $"data-val-{uniqueValidationType}-methodslist", MethodsList.ToJson());
                 Debug.Assert(ParsersMap != null);
                 if (ParsersMap.Any())
-                    MergeAttribute(context.Attributes, "data-val-parsersmap", ParsersMap.ToJson());
+                    MergeAttribute(context.Attributes, $"data-val-{uniqueValidationType}-parsersmap", ParsersMap.ToJson());
                 Debug.Assert(ErrFieldsMap != null);
                 if (ErrFieldsMap.Any())
-                    MergeAttribute(context.Attributes, "data-val-errfieldsmap", ErrFieldsMap.ToJson());
+                    MergeAttribute(context.Attributes, $"data-val-{uniqueValidationType}-errfieldsmap", ErrFieldsMap.ToJson());
             }
             catch (Exception e)
             {
