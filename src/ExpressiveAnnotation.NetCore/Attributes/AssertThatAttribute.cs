@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using ExpressiveAnnotations.NetCore.Validators;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ExpressiveAnnotations.NetCore.Attributes
@@ -69,8 +70,8 @@ namespace ExpressiveAnnotations.NetCore.Attributes
                 throw new ArgumentNullException(nameof(context));
             }
 
-            MergeAttribute(context.Attributes, "data-val", "true");
-            MergeAttribute(context.Attributes, "data-val-assertthat", DefaultErrorMessage);
+            var validator = new AssertThatValidator(context.ModelMetadata, this);
+            validator.AttachValidationRules(context, DefaultErrorMessage);
         }
     }
 }

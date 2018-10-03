@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ExpressiveAnnotations.NetCore.Caching;
 
 namespace ExpressiveAnnotations.NetCoreSample
 {
@@ -34,6 +35,8 @@ namespace ExpressiveAnnotations.NetCoreSample
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +62,9 @@ namespace ExpressiveAnnotations.NetCoreSample
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            // Give the request storage static class access to the HttpContextAccessor, so that it can get the HttpContext.
+            RequestStorage.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
 
             CustomToolchain.Register();
         }

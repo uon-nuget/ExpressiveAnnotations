@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using ExpressiveAnnotations.NetCore.Analysis;
 using ExpressiveAnnotations.NetCore.Functions;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ExpressiveAnnotations.NetCore.Attributes
 {
@@ -315,15 +316,5 @@ namespace ExpressiveAnnotations.NetCore.Attributes
             return message;
         }
 
-        protected bool MergeAttribute(IDictionary<string, string> attributes, string key, string value)
-        {
-            if (attributes.ContainsKey(key))
-            {
-                return false;
-            }
-
-            attributes.Add(key, value);
-            return true;
-        }
     }
 }
