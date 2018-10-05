@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Resources;
 using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
-namespace ExpressiveAnnotations.NetCoreSample.Inheritance
+namespace UoN.ExpressiveAnnotations.NetCoreSample.Inheritance
 {
     public class CustomAssertThatAttribute : ExpressiveAttribute
     {

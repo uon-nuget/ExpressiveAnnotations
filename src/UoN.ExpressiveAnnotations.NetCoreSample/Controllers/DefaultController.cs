@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using ExpressiveAnnotations.NetCoreSample.Models;
 using Microsoft.AspNetCore.Mvc;
+using UoN.ExpressiveAnnotations.NetCoreSample.Models;
 
-namespace ExpressiveAnnotations.NetCoreSample.Controllers
+namespace UoN.ExpressiveAnnotations.NetCoreSample.Controllers
 {
     [Route("api/Default")]
     public class DefaultController : ControllerBase

@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
 using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
-namespace ExpressiveAnnotations.NetCoreSample.Inheritance
+namespace UoN.ExpressiveAnnotations.NetCoreSample.Inheritance
 {
     public class CustomRequiredIfAttribute: ExpressiveAttribute
     {

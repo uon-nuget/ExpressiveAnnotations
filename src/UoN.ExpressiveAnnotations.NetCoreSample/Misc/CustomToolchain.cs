@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using UoN.ExpressiveAnnotations.NetCore.Functions;
 
-namespace ExpressiveAnnotations.NetCoreSample.Misc
+namespace UoN.ExpressiveAnnotations.NetCoreSample.Misc
 {
     //public class CustomFunctionsProvider : IFunctionsProvider
     //{

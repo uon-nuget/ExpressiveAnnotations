@@ -1,5 +1,5 @@
 
-namespace ExpressiveAnnotations.NetCoreSample.Models
+namespace UoN.ExpressiveAnnotations.NetCoreSample.Models
 {
     public class ErrorViewModel
     {

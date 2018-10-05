@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ExpressiveAnnotations.NetCoreSample.Misc;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UoN.ExpressiveAnnotations.NetCore.Caching;
+using UoN.ExpressiveAnnotations.NetCoreSample.Misc;
 
-namespace ExpressiveAnnotations.NetCoreSample
+namespace UoN.ExpressiveAnnotations.NetCoreSample
 {
     public class Startup
     {

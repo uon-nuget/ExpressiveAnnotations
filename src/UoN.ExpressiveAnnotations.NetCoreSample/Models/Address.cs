@@ -1,6 +1,6 @@
 ﻿using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
-namespace ExpressiveAnnotations.NetCoreSample.Models
+namespace UoN.ExpressiveAnnotations.NetCoreSample.Models
 {
     public class Address
     {

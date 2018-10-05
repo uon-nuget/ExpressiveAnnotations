@@ -4,12 +4,12 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ExpressiveAnnotations.NetCoreSample.Models;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using UoN.ExpressiveAnnotations.NetCoreSample.Models;
 
-namespace ExpressiveAnnotations.NetCoreSample.Controllers
+namespace UoN.ExpressiveAnnotations.NetCoreSample.Controllers
 {
     public class HomeController : Controller
     {

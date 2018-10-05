@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
-using ExpressiveAnnotations.NetCoreSample.Inheritance;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using UoN.ExpressiveAnnotations.NetCore.Attributes;
+using UoN.ExpressiveAnnotations.NetCoreSample.Inheritance;
 
-namespace ExpressiveAnnotations.NetCoreSample.Models
+namespace UoN.ExpressiveAnnotations.NetCoreSample.Models
 {
     public enum Document
     {
