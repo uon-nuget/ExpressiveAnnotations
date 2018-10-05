@@ -41,9 +41,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{19195F
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressiveAnnotations.NetCore", "ExpressiveAnnotation.NetCore\ExpressiveAnnotations.NetCore.csproj", "{73BCC53F-2AF9-4083-B07E-BA4FA95DEC6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UoN.ExpressiveAnnotations.NetCore", "UoN.ExpressiveAnnotations.NetCore\UoN.ExpressiveAnnotations.NetCore.csproj", "{73BCC53F-2AF9-4083-B07E-BA4FA95DEC6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressiveAnnotations.NetCoreSample", "ExpressiveAnnotations.NetCoreSample\ExpressiveAnnotations.NetCoreSample.csproj", "{4A14E16A-8C60-42A8-9174-F78147E7AAA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UoN.ExpressiveAnnotations.NetCoreSample", "UoN.ExpressiveAnnotations.NetCoreSample\UoN.ExpressiveAnnotations.NetCoreSample.csproj", "{4A14E16A-8C60-42A8-9174-F78147E7AAA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

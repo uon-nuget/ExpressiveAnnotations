@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ExpressiveAnnotation.NetCore\ExpressiveAnnotations.NetCore.csproj" />
+    <ProjectReference Include="..\UoN.ExpressiveAnnotations.NetCore\UoN.ExpressiveAnnotations.NetCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
