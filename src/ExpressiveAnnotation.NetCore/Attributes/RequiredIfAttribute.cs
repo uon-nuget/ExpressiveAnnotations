@@ -1,5 +1,6 @@
-﻿/* https://github.com/jwaliszko/ExpressiveAnnotations
- * Copyright (c) 2014 Jarosław Waliszko
+﻿/* https://github.com/MmmBerry/ExpressiveAnnotations
+ * Original work Copyright (c) 2014 Jarosław Waliszko
+ * Modified work Copyright (c) 2018 University of Nottingham
  * Licensed MIT: http://opensource.org/licenses/MIT */
 
 using System;
