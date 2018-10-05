@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
-using ExpressiveAnnotations.NetCore.Attributes;
 using ExpressiveAnnotations.NetCoreSample.Inheritance;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
 namespace ExpressiveAnnotations.NetCoreSample.Models
 {

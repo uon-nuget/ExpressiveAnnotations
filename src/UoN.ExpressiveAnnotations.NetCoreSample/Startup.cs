@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ExpressiveAnnotations.NetCore.Caching;
+using UoN.ExpressiveAnnotations.NetCore.Caching;
 
 namespace ExpressiveAnnotations.NetCoreSample
 {

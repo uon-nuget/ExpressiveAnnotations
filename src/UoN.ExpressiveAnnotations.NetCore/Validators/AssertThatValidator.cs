@@ -3,11 +3,11 @@
  * Modified work Copyright (c) 2018 University of Nottingham
  * Licensed MIT: http://opensource.org/licenses/MIT */
 
-using ExpressiveAnnotations.NetCore.Attributes;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
-namespace ExpressiveAnnotations.NetCore.Validators
+namespace UoN.ExpressiveAnnotations.NetCore.Validators
 {
     /// <summary>
     ///     Model validator for <see cref="AssertThatAttribute" />.

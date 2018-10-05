@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
-using ExpressiveAnnotations.NetCore.Attributes;
+using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
 namespace ExpressiveAnnotations.NetCoreSample.Inheritance
 {

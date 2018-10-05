@@ -5,11 +5,11 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using ExpressiveAnnotations.NetCore.Attributes;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
-namespace ExpressiveAnnotations.NetCore.Validators
+namespace UoN.ExpressiveAnnotations.NetCore.Validators
 {
     /// <summary>
     ///     Model validator for <see cref="RequiredIfAttribute" />.

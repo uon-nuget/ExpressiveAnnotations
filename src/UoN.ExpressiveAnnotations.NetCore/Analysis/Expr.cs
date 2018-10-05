@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace ExpressiveAnnotations.NetCore.Analysis
+namespace UoN.ExpressiveAnnotations.NetCore.Analysis
 {
     /// <summary>
     ///     An <see cref="Expression" /> wrapper.

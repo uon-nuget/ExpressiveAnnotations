@@ -10,12 +10,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
-using ExpressiveAnnotations.NetCore.Attributes;
-using ExpressiveAnnotations.NetCore.Caching;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using UoN.ExpressiveAnnotations.NetCore.Attributes;
+using UoN.ExpressiveAnnotations.NetCore.Caching;
 
-namespace ExpressiveAnnotations.NetCore.Validators
+namespace UoN.ExpressiveAnnotations.NetCore.Validators
 {
     /// <summary>
     ///     Base class for expressive validators.

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Resources;
-using ExpressiveAnnotations.NetCore.Attributes;
+using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
 namespace ExpressiveAnnotations.NetCoreSample.Inheritance
 {

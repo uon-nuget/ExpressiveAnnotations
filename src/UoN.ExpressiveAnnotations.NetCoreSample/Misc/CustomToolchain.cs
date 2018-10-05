@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using ExpressiveAnnotations.NetCore.Functions;
+using UoN.ExpressiveAnnotations.NetCore.Functions;
 
 namespace ExpressiveAnnotations.NetCoreSample.Misc
 {

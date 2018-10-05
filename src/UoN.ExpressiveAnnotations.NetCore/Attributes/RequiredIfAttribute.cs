@@ -5,10 +5,10 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using ExpressiveAnnotations.NetCore.Validators;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using UoN.ExpressiveAnnotations.NetCore.Validators;
 
-namespace ExpressiveAnnotations.NetCore.Attributes
+namespace UoN.ExpressiveAnnotations.NetCore.Attributes
 {
     /// <summary>
     ///     Validation attribute, executed for null-only annotated field, which indicates that such a field

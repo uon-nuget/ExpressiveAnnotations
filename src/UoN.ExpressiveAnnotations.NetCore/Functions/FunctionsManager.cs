@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using ExpressiveAnnotations.NetCore.Analysis;
+using UoN.ExpressiveAnnotations.NetCore.Analysis;
 
-namespace ExpressiveAnnotations.NetCore.Functions
+namespace UoN.ExpressiveAnnotations.NetCore.Functions
 {
     /// <summary>
     ///     Registers new functions of predefined signatures.

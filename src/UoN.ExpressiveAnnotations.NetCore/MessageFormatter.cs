@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ExpressiveAnnotations.NetCore
+namespace UoN.ExpressiveAnnotations.NetCore
 {
     internal static class MessageFormatter
     {

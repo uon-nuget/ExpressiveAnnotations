@@ -4,11 +4,10 @@
  * Licensed MIT: http://opensource.org/licenses/MIT */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 
-namespace ExpressiveAnnotations.NetCore.Caching
+namespace UoN.ExpressiveAnnotations.NetCore.Caching
 {
     /// <summary>
     ///     Persists arbitrary key-value pairs for the lifespan of the current HTTP request.

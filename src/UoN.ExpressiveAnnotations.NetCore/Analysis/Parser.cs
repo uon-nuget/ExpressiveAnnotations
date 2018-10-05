@@ -8,9 +8,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using ExpressiveAnnotations.NetCore.Functions;
+using UoN.ExpressiveAnnotations.NetCore.Functions;
 
-namespace ExpressiveAnnotations.NetCore.Analysis
+namespace UoN.ExpressiveAnnotations.NetCore.Analysis
 {
     /* EBNF grammar:
      *

@@ -13,10 +13,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using ExpressiveAnnotations.NetCore.Analysis;
 using Newtonsoft.Json;
+using UoN.ExpressiveAnnotations.NetCore.Analysis;
 
-namespace ExpressiveAnnotations.NetCore
+namespace UoN.ExpressiveAnnotations.NetCore
 {
     internal interface ITypeProvider
     {

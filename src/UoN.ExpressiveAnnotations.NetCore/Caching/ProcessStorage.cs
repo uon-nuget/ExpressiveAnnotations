@@ -8,7 +8,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace ExpressiveAnnotations.NetCore.Caching
+namespace UoN.ExpressiveAnnotations.NetCore.Caching
 {
     /// <summary>
     ///     Stores arbitrary key-value pairs for the entire lifespan of the application (until the pool recycles).

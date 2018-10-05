@@ -9,11 +9,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
-using ExpressiveAnnotations.NetCore.Analysis;
-using ExpressiveAnnotations.NetCore.Functions;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using UoN.ExpressiveAnnotations.NetCore.Analysis;
+using UoN.ExpressiveAnnotations.NetCore.Functions;
 
-namespace ExpressiveAnnotations.NetCore.Attributes
+namespace UoN.ExpressiveAnnotations.NetCore.Attributes
 {
     /// <summary>
     ///     Base class for expressive validation attributes.

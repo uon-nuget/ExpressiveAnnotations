@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using ExpressiveAnnotations.NetCore.Attributes;
+using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
 namespace ExpressiveAnnotations.NetCoreSample.Models
 {

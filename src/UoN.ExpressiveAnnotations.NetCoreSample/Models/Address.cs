@@ -1,4 +1,4 @@
-﻿using ExpressiveAnnotations.NetCore.Attributes;
+﻿using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
 namespace ExpressiveAnnotations.NetCoreSample.Models
 {

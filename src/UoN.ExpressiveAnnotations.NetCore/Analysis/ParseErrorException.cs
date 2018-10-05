@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 using System.Security;
 using System.Security.Permissions;
 
-namespace ExpressiveAnnotations.NetCore.Analysis
+namespace UoN.ExpressiveAnnotations.NetCore.Analysis
 {
     /// <summary>
     ///     The exception thrown when parse operation detects error in a specified expression.

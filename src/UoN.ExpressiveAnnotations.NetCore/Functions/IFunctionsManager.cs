@@ -5,7 +5,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace ExpressiveAnnotations.NetCore.Functions
+namespace UoN.ExpressiveAnnotations.NetCore.Functions
 {
     /// <summary>
     ///     Registers new functions of predefined signatures.

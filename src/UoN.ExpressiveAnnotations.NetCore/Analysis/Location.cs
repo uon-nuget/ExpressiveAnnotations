@@ -4,7 +4,7 @@
 
 using System;
 
-namespace ExpressiveAnnotations.NetCore.Analysis
+namespace UoN.ExpressiveAnnotations.NetCore.Analysis
 {
     /// <summary>
     ///     Contains the location information related to some arbitrary data within associated text block.
