@@ -1,14 +1,26 @@
 [
     {
-        "outputFileName": "wwwroot/css/site.min.css",
+        "outputFileName": "wwwroot/css/bootstrap.css",
         "inputFiles": [
-            "wwwroot/css/site.css"
+            "node_modules/bootstrap/dist/bootstrap.css"
         ],
         "minify": {
-            "enabled": true,
-            "renameLocals": true
+            "enabled": false,
+            "renameLocals": false
         },
-        "sourceMap": false
+        "sourceMap": true
+    },
+
+    {
+        "outputFileName": "wwwroot/js/bootstrap.js",
+        "inputFiles": [
+            "node_modules/bootstrap/dist/bootstrap.js"
+        ],
+        "minify": {
+            "enabled": false,
+            "renameLocals": false
+        },
+        "sourceMap": true
     },
 
     {
@@ -65,7 +77,21 @@
             "node_modules/expressive-annotations-validate/dist/expressive.annotations.validate.js",
             "node_modules/jquery/dist/jquery.js",
             "node_modules/jquery-validation/dist/jquery.validate.js",
-            "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js"
+            "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js",
+            "node_modules/bootstrap/dist/bootstrap.js"
+        ],
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        "sourceMap": false
+    },
+
+    {
+        "outputFileName": "wwwroot/css/site.min.css",
+        "inputFiles": [
+            "wwwroot/css/site.css",
+            "node_modules/bootstrap/dist/bootstrap.css"
         ],
         "minify": {
             "enabled": true,
