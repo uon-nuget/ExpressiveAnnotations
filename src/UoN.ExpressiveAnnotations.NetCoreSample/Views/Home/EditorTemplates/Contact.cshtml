@@ -1,0 +1,47 @@
+﻿@using UoN.ExpressiveAnnotations.NetCoreSample.Models
+@model UoN.ExpressiveAnnotations.NetCoreSample.Models.Contact
+
+@{
+    var client = "client".Equals(ViewBag.Validation);
+}
+
+<ol>
+    <li>
+        <pre class="code">
+[RequiredIf("Parent.GoAbroad && Phone == null")]
+[AssertThat("IsEmail(Email)")]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.LabelFor(model => model.Email, new { @class = "inline prefix" })
+            @Html.TextBoxFor(model => model.Email)
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
+    </li>
+    <li>
+        <pre class="code">
+[RequiredIf("Parent.GoAbroad && Email == null")]
+[AssertThat(@@"IsRegexMatch(Phone, '^\\d+$'), Priority = 1")]
+[AssertThat("Length(Phone) > 8 && Length(Phone) < 16", Priority = 2)]
+</pre>
+        <pre class="action">[show attribute]</pre>
+        <div>
+            @Html.LabelFor(model => model.Phone, new { @class = "inline prefix" })
+            @Html.TextBoxFor(model => model.Phone)
+            @Html.ValidationMessageFor(model => model.Phone)
+        </div>
+    </li>
+
+@for (var i = 0; i < Model.Addresses.Count; i++)
+{
+    <li>
+        @Html.EditorFor(model => Model.Addresses[i])
+    </li>
+}
+
+</ol>
+
+@if (client)
+{
+    @Html.HiddenFor(m => m.Parent.GoAbroad) @*hidden mock of GoAbroad field from Parent context*@
+}

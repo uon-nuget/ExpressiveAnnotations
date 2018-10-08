@@ -1,0 +1,17 @@
+﻿@using UoN.ExpressiveAnnotations.NetCoreSample.Models
+@model UoN.ExpressiveAnnotations.NetCoreSample.Models.Address
+
+    <pre class="code">
+[AssertThat("StartsWith(Details, StreetPrefix)")]
+[AssertThat("Length(Trim(Details)) > Length(StreetPrefix) + 1")]
+</pre>
+    <pre class="action">[show attribute]</pre>
+    <div>
+        @Html.LabelFor(model => model.Details, new { @class = "inline prefix" })
+        @Html.TextBoxFor(model => model.Details)
+        @Html.ValidationMessageFor(model => model.Details)
+
+        @*hidden backing fields*@
+        @Html.HiddenFor(model => model.StreetPrefix)
+        @Html.HiddenFor(model => model.Type)
+    </div>
