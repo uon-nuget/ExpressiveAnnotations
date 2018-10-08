@@ -1,6 +1,6 @@
 ﻿/* https://github.com/uon-nuget/ExpressiveAnnotations
  * Original work Copyright (c) 2014 Jarosław Waliszko
- * Modified work Copyright (c) 2018 University of Nottingham
+ * Modified work Copyright (c) 2018 The University of Nottingham
  * Licensed MIT: http://opensource.org/licenses/MIT */
 
 using Microsoft.AspNetCore.Mvc.ModelBinding;
