@@ -122,3 +122,9 @@ node_modules/
 /.vs
 /src/UoN.ExpressiveAnnotations.MvcWebSample/Properties/PublishProfiles/FolderProfile.pubxml
 /src/.vs
+
+/src/UoN.ExpressiveAnnotations.NetCoreSample/wwwroot/css/bootstrap.css
+/src/UoN.ExpressiveAnnotations.NetCoreSample/wwwroot/css/site.min.css
+/src/UoN.ExpressiveAnnotations.NetCoreSample/wwwroot/fonts/
+/src/UoN.ExpressiveAnnotations.NetCoreSample/wwwroot/js/
+
