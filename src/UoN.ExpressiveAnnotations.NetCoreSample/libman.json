@@ -8,20 +8,6 @@
             "destination": "wwwroot/js"
         },
         {
-            "library": "node_modules/bootstrap/dist/css",
-            "files": [ "bootstrap.css" ],
-            "destination": "wwwroot/css"
-        },
-        {
-            "library": "node_modules/bootstrap/dist/js",
-            "files": [ "bootstrap.js" ],
-            "destination": "wwwroot/js"
-        },
-        {
-            "library": "node_modules/bootstrap/dist/fonts",
-            "destination": "wwwroot/fonts"
-        },
-        {
             "library": "node_modules/jquery/dist",
             "files": [ "jquery.js" ],
             "destination": "wwwroot/js"

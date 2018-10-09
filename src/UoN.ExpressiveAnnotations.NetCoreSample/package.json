@@ -1,6 +1,5 @@
 {
     "devDependencies": {
-        "bootstrap": "^3.3.7",
         "expressive-annotations-validate": "2.7.4",
         "jquery": "^3.3.1",
         "jquery-validation": "^1.17.0",
