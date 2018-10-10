@@ -1,11 +1,59 @@
-﻿![logo](logo.png)
+﻿# UoN.ExpressiveAnnotations.NetCore
 
-# <a id="expressiveannotations-annotation-based-conditional-validation">ExpressiveAnnotations<sup><sup><sup>[annotation-based conditional validation]</sup></sup></sup></a>
+[![License](https://img.shields.io/badge/licence-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://travis-ci.org/UniversityOfNottingham/UoN.ExpressiveAnnotations.NetCore.svg?branch=develop)](https://travis-ci.org/UniversityOfNottingham/UoN.ExpressiveAnnotations.NetCore)
 
-[![Build status](https://img.shields.io/appveyor/ci/jwaliszko/ExpressiveAnnotations.svg)](https://ci.appveyor.com/project/jwaliszko/ExpressiveAnnotations)
-[![Coverage status](https://img.shields.io/codecov/c/github/jwaliszko/ExpressiveAnnotations.svg)](https://codecov.io/github/jwaliszko/ExpressiveAnnotations)
-[![Release version](https://img.shields.io/github/release/jwaliszko/ExpressiveAnnotations.svg)](https://github.com/jwaliszko/ExpressiveAnnotations/releases/latest)
-[![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
+## What is it?
+
+A small .NET library forked from Jarosław Waliszko's [Expressive Annotations](https://github.com/jwaliszko/ExpressiveAnnotations) to add support for .NET Core. Expressive Annotations provides more flexible model validation attributes to add to the attributes built in to .NET.
+
+## What does it do?
+
+Core usage and functionality are unchanged from Jarosław's .NET Framework version. Expressive Annotations adds two new validation attributes to .NET's built-in [validation attributes](https://docs.microsoft.com/en-us/aspnet/core/mvc/models/validation) ('Required', 'Range', 'RegularExpression', etc):
+
+* RequiredIf - The annotated field is required to be non-null if the given condition is satisfied.
+* AssertThat - The annotated field is considered to be valid if the given condition is satisfied.
+
+Conditions are specified as expressions within the attributes, using Expressive Annotations' [expressions syntax](#expressions-specification). In addition to the usual arithmetic, relational and logical operators, the syntax provides 30 [built-in ToolChain functions](#built-in-functions) such as Today(), Length(), Concat(), StartsWith(), IsEmail(), Average(), etc. It's also possible to make calls to your own [custom-designed functions](#what-if-there-is-no-built-in-function-i-need) from within condition expressions.
+
+## What's changed in this .NET Core Version?
+
+TODO
+Jarosław's .NET Framework version still works in .NET Core (up to 2.1 at least) for server-side validation, but changes in .NET Core to the way that client-side validation is hooked up required some changes in order to pass  
+
+## Unimplemented functionality
+
+
+
+## Dependencies
+
+The library targets `netstandard2.0` and depends upon ASP.Net Core 2.1 MVC and Newtonsoft JSON 11.0.2.
+
+To use client-side validation you'll also need to include Jarosław's expressive-annotations-validate javascript file.
+
+## Usage
+
+### Acquiring the library
+
+#### NuGet
+
+This library is available from [nuget.org](https://www.nuget.org/packages/UoN.ExpressiveAnnotations.NetCore/)
+
+#### Build from source
+
+TODO
+
+#### Brief Examples of usage
+The [brief introductory examples](#what-are-a-brief-examples-of-usage) of how Expressive Annotations can be used, from Jarosław's original documentation, are still valid in UoN.ExpressiveAnnotations.NetCore. 
+
+## Contributing
+
+Contributions are welcome.
+
+If there are issues open, please feel free to make pull requests for them, and they will be reviewed.
+
+
+## Original Documentation
 
 A small .NET and JavaScript library which provides full-stack, annotation-based, conditional validation mechanisms.
 
@@ -14,7 +62,7 @@ Given attributes, powered by expressions engine, allow to forget about imperativ
 ### Table of contents
  - [What is the context behind this work?](#what-is-the-context-behind-this-implementation)
  - [RequiredIf vs. AssertThat - where is the difference?](#requiredif-vs-assertthat---where-is-the-difference)
- - [Sample projects + demo](#sample-projects-+-demo)
+ - [Sample project](#sample-project)
  - [What are a brief examples of usage?](#what-are-a-brief-examples-of-usage)
  - [Declarative vs. imperative programming - what is it about?](#declarative-vs-imperative-programming---what-is-it-about)
  - [EA expressions specification](#expressions-specification)
@@ -63,16 +111,15 @@ Declarative validation when [compared](#declarative-vs-imperative-programming---
 * `RequiredIf` - if value is not yet provided, check whether it is required (annotated field is required to be non-null, when given condition is satisfied),
 * `AssertThat` - if value is already provided, check whether the condition is met (non-null annotated field is considered as valid, when given condition is satisfied).
 
-### <a id="sample-projects-+-demo">Sample projects + demo</a>
+### <a id="sample-project">Sample project</a>
 
-* [**ASP.NET MVC web sample**](src/ExpressiveAnnotations.MvcWebSample),
-* [**WPF MVVM desktop sample**](src/ExpressiveAnnotations.MvvmDesktopSample).
+* [**.NET Core sample**](src/UoN.ExpressiveAnnotations.NetCoreSample)
 
-ASP.NET MVC web sample is also hosted online - http://expressiveannotations.net/.
+This sample project is a .NET Core 2.1 re-work of Jarosław's MvcWebSample with several features of that sample, and all tests, removed. A few parts of the project have been reworked to take advantage of new features of .NET Core, but only where required to get the project to run under .NET Core. As such, there is still some work to do to make this a true .NET Core project; it is at present merely a proof of concept to demonstrate how to use this .NET Core version of Expressive Annotations within a .NET Core application. The parts of the sample that have been removed do currently cause some errors and warnings in the console.
 
 ### <a id="what-are-a-brief-examples-of-usage">What are a brief examples of usage?</a>
 
-This section presents few exemplary code snippets. Sample projects in the section above contain much more comprehensive set of use cases.
+This section presents few exemplary code snippets. The sample project in the section above contains a much more comprehensive set of use cases.
 
 ```C#
 using ExpressiveAnnotations.Attributes;
@@ -490,6 +537,8 @@ When expression is provided to the attribute, it should be of a boolean type. Th
 For the sake of performance optimization, expressions provided to attributes are compiled only once. Such compiled lambdas are then cached inside attributes instances and invoked for any subsequent validation requests without recompilation.
 
 When working with ASP.NET MVC stack, unobtrusive client-side validation mechanism is [additionally available](#what-about-the-support-of-aspnet-mvc-client-side-validation). Client receives unchanged expression string from server. Such an expression is then evaluated using JavaScript [`eval()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval) method within the context of reflected model object. Such a model, analogously to the server-side one, is basically deserialized DOM form (with some type-safety assurances and registered toolchain methods).
+
+Note that neither the server-side parser nor the client-side validation mechanism, as described above, have been changed in the UoN.ExpressiveAnnotation.NETCore version.
 
 ##### <a id="traps">Traps (discrepancies between server- and client-side expressions evaluation)</a>
 
