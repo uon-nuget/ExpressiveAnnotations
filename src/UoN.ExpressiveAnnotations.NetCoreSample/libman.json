@@ -1,0 +1,27 @@
+{
+    "version": "1.0",
+    "defaultProvider": "filesystem",
+    "libraries": [
+        {
+            "library": "node_modules/expressive-annotations-validate/dist/",
+            "files": [ "expressive.annotations.validate.js" ],
+            "destination": "wwwroot/js"
+        },
+        {
+            "library": "node_modules/jquery/dist",
+            "files": [ "jquery.js" ],
+            "destination": "wwwroot/js"
+        },
+        {
+            "library": "node_modules/jquery-validation/dist",
+            "files": [ "jquery.validate.js" ],
+            "destination": "wwwroot/js"
+        },
+        {
+            "library": "node_modules/jquery-validation-unobtrusive/dist",
+            "files": [ "jquery.validate.unobtrusive.js" ],
+            "destination": "wwwroot/js"
+        }
+
+    ]
+}

@@ -1,0 +1,28 @@
+[
+    {
+        "outputFileName": "wwwroot/js/site.min.js",
+        "inputFiles": [
+            "node_modules/expressive-annotations-validate/dist/expressive.annotations.validate.js",
+            "node_modules/jquery/dist/jquery.js",
+            "node_modules/jquery-validation/dist/jquery.validate.js",
+            "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js"
+        ],
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        "sourceMap": false
+    },
+
+    {
+        "outputFileName": "wwwroot/css/site.min.css",
+        "inputFiles": [
+            "wwwroot/css/site.css"
+        ],
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        "sourceMap": false
+    }
+]

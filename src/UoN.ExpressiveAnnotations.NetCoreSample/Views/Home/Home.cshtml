@@ -16,7 +16,7 @@
         <h1>ExpressiveAnnotations - annotation-based conditional validation</h1>
     </div>
     <div class="right-corner">
-        <a href="https://github.com/jwaliszko/ExpressiveAnnotations">[more on github]</a>
+        <a href="https://github.com/uon-nuget/ExpressiveAnnotations">[more on github]</a>
     </div>
 </div>
 
@@ -256,13 +256,13 @@
             });
 
             $('.date').datepicker($.datepicker.regional['@lang']).on('change', function() {
-                if (typeof $('form').valid == 'function') { // safety check if our demo project is not set to server side validation only (no jquery.validate.js loaded)
+                if (typeof $('form').valid === 'function') { // safety check if our demo project is not set to server side validation only (no jquery.validate.js loaded)
                     $(this).valid(); // triggers the validation test on change (to avoid second click)
                 }
             });
 
             $('input[type="checkbox"], input[type="radio"]').on('change', function() {
-                if (typeof $('form').valid == 'function') {
+                if (typeof $('form').valid === 'function') {
                     $(this).valid(); // triggers the validation test on change (jquery.validate.js does not trigger checkbox and radio validation on click, if such a click occurs prior to first submission attempt of entire form - later, validation is triggered
                 }
             }); // (downside of this hack - validation triggered 2 times for these fields after first form submission attempt is done)

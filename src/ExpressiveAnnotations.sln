@@ -3,20 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{5908C2CC-F987-4FCE-AFFA-17CC259EF970}"
-	ProjectSection(SolutionItems) = preProject
-		expressive.annotations.validate.js = expressive.annotations.validate.js
-		expressive.annotations.validate.min.js = expressive.annotations.validate.min.js
-		expressive.annotations.validate.test.js = expressive.annotations.validate.test.js
-		form.tests.harness.html = form.tests.harness.html
-		form.tests.harness.latestdeps.html = form.tests.harness.latestdeps.html
-		form.tests.html = form.tests.html
-		form.tests.js = form.tests.js
-	EndProjectSection
-	ProjectSection(FolderStartupServices) = postProject
-		{82A7F48D-3B50-4B1E-B82E-3ADA8210C358} = {82A7F48D-3B50-4B1E-B82E-3ADA8210C358}
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{4FE56EA0-4550-4A07-A758-331B9CF470A1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{19195FF5-4C1F-4330-9CA5-2C2A313C4A7B}"
