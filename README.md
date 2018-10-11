@@ -5,7 +5,7 @@
 
 ## What is it?
 
-A small .NET library forked from Jarosław Waliszko's [Expressive Annotations](https://github.com/jwaliszko/ExpressiveAnnotations) to add support for .NET Core. Expressive Annotations provides more flexible model validation attributes to add to the attributes built in to .NET.
+A small .NET library forked from Jarosław Waliszko's [Expressive Annotations](https://github.com/jwaliszko/ExpressiveAnnotations) to add support for .NET Core. Expressive Annotations provides new flexible and powerful model validation attributes, to add to the attributes built in to .NET.
 
 ## What does it do?
 
@@ -18,11 +18,21 @@ Conditions are specified as expressions within the attributes, using Expressive 
 
 ## What's changed in this .NET Core Version?
 
-TODO
-Jarosław's .NET Framework version still works in .NET Core (up to 2.1 at least) for server-side validation, but changes in .NET Core to the way that client-side validation is hooked up required some changes in order to pass  
+When using Jarosław's .NET Framework version of Expressive Annotations in a .NET Core application, server-side validation still works, but client-side validation doesn't. 
+
+In .NET Framework, [Custom Attributes](https://msdn.microsoft.com/en-us/library/cc668224.aspx) are implemented by defining a custom attribute class that inherits from ValidationAttribute (which implements server-side validation), and validation rules are passed to the client by hooking up a validator which inherits from [DataAnnotationsModelValidator](https://docs.microsoft.com/en-us/dotnet/api/system.web.modelbinding.dataannotationsmodelvalidator-1?view=netframework-4.7.2). 
+
+In .NET Core this has been simplified a little: ValidationAttribute still works the same way (hence server-side validation still works) but to support client-side validation the custom attribute class should implement [IClientModelValidator](https://docs.microsoft.com/en-us/aspnet/core/mvc/models/validation?view=aspnetcore-2.1#iclientmodelvalidator) and add data attributes to the ClientModelValidationContext. 
+
+This is essentially the change implemented in this .NET Core Version of ExpressiveAnnotations.
+
+In addition, the solution contains a partial re-implementation in .NET Core of Jarosław's sample project. This sample is incomplete and has only been partially reworked to follow .NET Core best practices. Not all of the controls work - the datepicker has not been implemented in the sample, for example - and the sample does produce some errors in the web developer console. But fundamentally the sample does demonstrate how Expressive Annotations can be hooked up in a .NET Core 2.1 application, which is somewhat different from the way that it is hooked up in a .NET Framework application.
+
+The UoN.ExpressiveAnnotations.NetCore solution has also been simplified by removing the supporting projects; a separate project for unobtrusive (client-side) validation is no longer necessary, so the functionality from that project has been merged into the UoN.ExpressiveAnnotations.NetCore project; separate samples for MvcWeb and MvvmDesktop applications are no longer relevant; and the test projects have been removed because tests have not yet been re-implemented in this solution.
 
 ## Unimplemented functionality
 
+Note that the ValueParserAttribute has not yet been implemented in UoN.ExpressiveAnnotations.NetCore.
 
 
 ## Dependencies
