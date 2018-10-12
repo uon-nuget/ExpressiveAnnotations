@@ -39,12 +39,12 @@ This library is available from [nuget.org](https://www.nuget.org/packages/UoN.Ex
 
 #### Build from source
 
-We recommend building with the dotnet cli, but since the package targets netstandard2.0 and depends only on ASP.Net Core 2.0 MVC, you should be able to build it in any tooling that supports those requirements.
+We recommend building with the dotnet cli, but since the package targets `netstandard2.0` and depends only on ASP.Net Core 2.0 MVC, you should be able to build it in any tooling that supports those requirements.
 
-Have the .NET Core SDK 2.0 or newer
-dotnet build
-Optionally dotnet pack
-Reference the resulting assembly, or NuGet package.
+- Have the .NET Core SDK 2.0 or newer
+- dotnet build
+- Optionally dotnet pack
+- Reference the resulting assembly, or NuGet package.
 
 ### Acquiring the javascript
 The required Javascript files are all available from [npm](https://www.npmjs.com/package/expressive-annotations-validate)
@@ -156,6 +156,8 @@ This gives Expressive Annotations' request storage static class access to the Ht
     services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 ```
 
+This is necessary because the cacheing classes from Expressive Annotations - ProcessStorage and RequestStorage - have not yet been rewritten using .NET Core's MemoryCache service. It is intended that this should be done at some point, in which case the startup configuration above will no longer be required, although startup.cs will then need to provide the dependency injection and lifetime management for the rewritten cache services.
+
 ### Brief Examples of usage
 The [brief introductory examples](#what-are-a-brief-examples-of-usage) of how Expressive Annotations can be used, from Jarosław's original documentation, are still valid in UoN.ExpressiveAnnotations.NetCore. Models which use Expressive Annotations attributes will need:
 
@@ -181,6 +183,9 @@ The UoN.ExpressiveAnnotations.NetCore solution has also been simplified by remov
 ## Unimplemented functionality
 
 Note that the ValueParserAttribute has not yet been implemented in UoN.ExpressiveAnnotations.NetCore.
+
+ToolChain functions and custom-defined functions have not been tested and may not work.
+
 
 ## Contributing
 
