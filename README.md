@@ -1,20 +1,134 @@
-﻿![logo](logo.png)
+﻿# UoN.ExpressiveAnnotations.NetCore
 
-# <a id="expressiveannotations-annotation-based-conditional-validation">ExpressiveAnnotations<sup><sup><sup>[annotation-based conditional validation]</sup></sup></sup></a>
+[![License](https://img.shields.io/badge/licence-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://travis-ci.org/UniversityOfNottingham/UoN.ExpressiveAnnotations.NetCore.svg?branch=develop)](https://travis-ci.org/UniversityOfNottingham/UoN.ExpressiveAnnotations.NetCore)
 
-[![Build status](https://img.shields.io/appveyor/ci/jwaliszko/ExpressiveAnnotations.svg)](https://ci.appveyor.com/project/jwaliszko/ExpressiveAnnotations)
-[![Coverage status](https://img.shields.io/codecov/c/github/jwaliszko/ExpressiveAnnotations.svg)](https://codecov.io/github/jwaliszko/ExpressiveAnnotations)
-[![Release version](https://img.shields.io/github/release/jwaliszko/ExpressiveAnnotations.svg)](https://github.com/jwaliszko/ExpressiveAnnotations/releases/latest)
-[![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
+## What is it?
 
-A small .NET and JavaScript library which provides full-stack, annotation-based, conditional validation mechanisms.
+A small .NET library forked from Jarosław Waliszko's [Expressive Annotations](https://github.com/jwaliszko/ExpressiveAnnotations) to add support for .NET Core. Expressive Annotations provides new flexible and powerful model validation attributes, to add to the attributes built in to .NET.
 
-Given attributes, powered by expressions engine, allow to forget about imperative way of step-by-step implementation of validation conditions in many cases. Since fields validation requirements are applied as metadata, domain-related code is more condensed.
+## What does it do?
+
+Usage and functionality are unchanged from Jarosław's .NET Framework version. Expressive Annotations adds two new validation attributes to .NET's built-in [validation attributes](https://docs.microsoft.com/en-us/aspnet/core/mvc/models/validation) (`Required`, `Range`, `RegularExpression`, etc):
+
+* `RequiredIf` - The annotated field is required to be non-null if the given condition is satisfied.
+* `AssertThat` - The annotated field is considered to be valid if the given condition is satisfied.
+
+Conditions are specified as expressions within the attributes, using Expressive Annotations' [expressions syntax](#expressions-specification). In addition to the usual arithmetic, relational and logical operators, the syntax provides 30 [built-in ToolChain functions](#built-in-functions) such as `Today()`, `Length()`, `Concat()`, `StartsWith()`, `IsEmail()`, `Average()`, etc. It's also possible to make calls to your own [custom-designed functions](#what-if-there-is-no-built-in-function-i-need) from within condition expressions.
+
+## Dependencies
+
+The library targets `netstandard2.0` and depends upon ASP.Net Core 2.1 MVC and Newtonsoft JSON 11.0.2.
+
+To use client-side validation you'll also need to include Jarosław's `expressive.annotations.validate.js`, which depends on `jquery.js`, `jquery.validate.js` and `jquery.validate.unobtrusive.js`.
+
+## <span id="usage">Usage</span>
+
+To use Expressive Annotations in your .NET Core project:
+
+* Add the library to your project
+* Add the required javascript files to your project and include them in your layout or views
+* Add code to startup to configure an `HttpContextAccessor` for the `RequestStorage` class
+* Add validation attributes as annotations to the properties you want to validate
+
+### Acquiring the library
+
+#### NuGet
+
+The library is available from [nuget.org](https://www.nuget.org/packages/UoN.ExpressiveAnnotations.NetCore/)
+
+#### Build from source
+
+We recommend building with the `dotnet` cli, but since the package targets `netstandard2.0` and depends only on other `netstandard2.0` libraries, you should be able to build it in any tooling that supports those requirements.
+
+- Have the .NET Core SDK 2.1 or newer
+- `dotnet build`
+- Optionally `dotnet pack`
+- Reference the resulting assembly, or NuGet package.
+
+### Acquiring the javascript
+The required Javascript files are all available from [npm:](https://www.npmjs.com/package/expressive-annotations-validate)
+
+```
+    npm install expressive-annotations-validate
+```
+
+### Referencing the javascript files
+Depending on how you build your Javascript files, you may need some kind of build step to get the JS files into the right place for your project. The `UoN.ExpressiveAnnotations.NetCoreSample` project in this solution uses [Library Manager](https://blogs.msdn.microsoft.com/webdev/2018/04/17/library-manager-client-side-content-manager-for-web-apps/), which is built in to Visual Studio from 15.8 onwards (April 2018). You can see how the sample project uses Library Manager [here](./src/UoN.ExpressiveAnnotations.NetCoreSample/libman.json). 
+The sample project also uses the [BuildBundlerMinifier](https://docs.microsoft.com/en-us/aspnet/core/client-side/bundling-and-minification?view=aspnetcore-2.1&tabs=visual-studio%2Caspnetcore2x) package to produce minified JS and CSS for production; you can see how it configures this [here](./src/UoN.ExpressiveAnnotations.NetCoreSample/bundleconfig.json).
+
+When referencing the javascript files in your views or layout, note that `expressive.annotations.validate.js` must be included **after** the jquery js files. Be careful not to include any of the js files twice, as this has been known to cause errors. The NetCore Sample project includes the javascript files in [_Layout.cshtml](./src/UoN.ExpressiveAnnotations.NetCoreSample/Views/Shared/_Layout.cshtml) and [_ValidationScriptsPartial](./src/UoN.ExpressiveAnnotations.NetCoreSample/Views/Shared/_ValidationScriptsPartial.cshtml), as follows:
+
+```xml
+    <environment include="Development">
+        <script src="~/js/jquery.js" asp-append-version="true"></script>
+        <script src="~/js/jquery.validate.js" asp-append-version="true"></script>
+        <script src="~/js/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
+        <script src="~/js/expressive.annotations.validate.js" asp-append-version="true"></script>        
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+```
+
+### Add code to `Startup`
+In your project's `Startup.cs`, add the following to the end of `Configure()`:
+
+```csharp
+    RequestStorage.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
+```
+This gives Expressive Annotations' request storage static class access to the `HttpContextAccessor`, so that it can get the `HttpContext`, which is used to store the per-context cache. You should also add the following to `ConfigureServices()`:
+
+```csharp
+    services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+```
+
+This is necessary because the cacheing classes from Expressive Annotations - `ProcessStorage` and `RequestStorage` - have not yet been rewritten using .NET Core's `MemoryCache` service. It is intended that this should be done at some point, in which case the startup configuration above will no longer be required, although `startup.cs` will then need to provide the dependency injection and lifetime management for the rewritten cache services.
+
+### Brief Examples of usage
+The [brief introductory examples](#what-are-a-brief-examples-of-usage) of how Expressive Annotations can be used, from Jarosław's original documentation, are still valid in UoN.ExpressiveAnnotations.NetCore. Models which use Expressive Annotations attributes will need:
+
+```csharp
+using UoN.ExpressiveAnnotations.NetCore.Attributes;
+```
+
+
+## What's changed in the .NET Core Version?
+
+When using Jarosław's .NET Framework version of Expressive Annotations in a .NET Core application, server-side validation still works, but client-side validation doesn't. 
+
+In .NET Framework, [Custom Attributes](https://msdn.microsoft.com/en-us/library/cc668224.aspx) are implemented by defining a custom attribute class that inherits from `ValidationAttribute` (which implements server-side validation), and validation rules are passed to the client by hooking up a validator which inherits from [DataAnnotationsModelValidator](https://docs.microsoft.com/en-us/dotnet/api/system.web.modelbinding.dataannotationsmodelvalidator-1?view=netframework-4.7.2). 
+
+In .NET Core this has been simplified a little: `ValidationAttribute` still works the same way (hence server-side validation still works) but to support client-side validation the custom attribute class should implement [IClientModelValidator](https://docs.microsoft.com/en-us/aspnet/core/mvc/models/validation?view=aspnetcore-2.1#iclientmodelvalidator), adding data attributes to the `ClientModelValidationContext` in the implementation of `AddValidation()`. 
+
+This is essentially the change implemented in this .NET Core Version of ExpressiveAnnotations. Although this means that separate Validator classes are no longer required, this implementation preserves the separation of the Validator classes from the Attribute classes, with the Attribute classes instantiating Validators and calling `AttachValidationRules()` on those Validators to add the data attributes to the context. A separate project for unobtrusive (client-side) validation is no longer necessary though, so the helper classes and methods from that project have been merged into the `UoN.ExpressiveAnnotations.NetCore` project.
+
+In addition, the solution contains a partial re-implementation in .NET Core of Jarosław's sample project. The .NET Core sample is incomplete and has only been partially reworked to follow .NET Core best practices. Not all of the controls work - the datepicker has not been implemented in the sample, for example - and the sample does produce some errors in the web developer console. But fundamentally the sample does demonstrate how Expressive Annotations can be hooked up - with functioning client-side validation - in a .NET Core 2.1 application, which is somewhat different from the way that Expressive Annotations is hooked up in a .NET Framework application.
+
+The `UoN.ExpressiveAnnotations.NetCore` solution has also been simplified by removing the supporting projects; separate samples for MvcWeb and MvvmDesktop applications are no longer relevant; and the test projects have been removed because tests have not yet been re-implemented in this solution.
+
+## Unimplemented functionality
+
+Note that the `ValueParserAttribute` has not yet been implemented in `UoN.ExpressiveAnnotations.NetCore`.
+
+ToolChain functions and custom-defined functions have not been tested and may not work.
+
+
+## Contributing
+
+Contributions are welcome.
+
+If there are issues open, please feel free to make pull requests for them, and they will be reviewed.
+
+
+## Documentation
+
+Jarosław's documentation for Expressive Annotations is reproduced below, as it was at the time when `UoN.ExpressiveAnnotations.NetCore` was forked from it, with changes to those sections that are affected by the changes in the .NetCore version.
 
 ### Table of contents
  - [What is the context behind this work?](#what-is-the-context-behind-this-implementation)
  - [RequiredIf vs. AssertThat - where is the difference?](#requiredif-vs-assertthat---where-is-the-difference)
- - [Sample projects + demo](#sample-projects-+-demo)
+ - [Sample project](#sample-project)
  - [What are a brief examples of usage?](#what-are-a-brief-examples-of-usage)
  - [Declarative vs. imperative programming - what is it about?](#declarative-vs-imperative-programming---what-is-it-about)
  - [EA expressions specification](#expressions-specification)
@@ -26,7 +140,6 @@ Given attributes, powered by expressions engine, allow to forget about imperativ
    - [Signatures description](#signatures)
    - [Implementation details outline](#implementation)
    - [Traps (discrepancies between server- and client-side expressions evaluation)](#traps)
- - [What about the support of ASP.NET MVC client-side validation?](#what-about-the-support-of-aspnet-mvc-client-side-validation)
  - [Frequently asked questions](#frequently-asked-questions)
    - [Is it possible to compile all usages of annotations at once?](#is-it-possible-to-compile-all-usages-of-annotations-at-once) <sup>(re server-side)</sup>
    - [What if there is no built-in function I need?](#what-if-there-is-no-built-in-function-i-need) <sup>(re client and server-side)</sup>
@@ -48,7 +161,6 @@ Given attributes, powered by expressions engine, allow to forget about imperativ
    - [Client-side validation doesn't work, how to troubleshoot it?](#client---side-validation-doesnt-work-how-to-troubleshoot-it) <sup>(re client-side)</sup>
    - [Is there a possibility to perform asynchronous validation?](#is-there-a-possibility-to-perform-asynchronous-validation) <sup>(re client-side, experimental)</sup>
    - [What if my question is not covered by FAQ section?](#what-if-my-question-is-not-covered-by-faq-section)
- - [Installation instructions](#installation)
  - [Contributors](#contributors)
  - [License](#license)
 
@@ -63,18 +175,17 @@ Declarative validation when [compared](#declarative-vs-imperative-programming---
 * `RequiredIf` - if value is not yet provided, check whether it is required (annotated field is required to be non-null, when given condition is satisfied),
 * `AssertThat` - if value is already provided, check whether the condition is met (non-null annotated field is considered as valid, when given condition is satisfied).
 
-### <a id="sample-projects-+-demo">Sample projects + demo</a>
+### <a id="sample-project">Sample project</a>
 
-* [**ASP.NET MVC web sample**](src/ExpressiveAnnotations.MvcWebSample),
-* [**WPF MVVM desktop sample**](src/ExpressiveAnnotations.MvvmDesktopSample).
+* [**.NET Core sample**](./src/UoN.ExpressiveAnnotations.NetCoreSample)
 
-ASP.NET MVC web sample is also hosted online - http://expressiveannotations.net/.
+This sample project is a .NET Core 2.1 re-work of Jarosław's MvcWebSample with several features of that sample, and all tests, removed. A few parts of the project have been reworked to take advantage of new features of .NET Core, but only where required to get the project to run under .NET Core. As such, there is still some work to do to make this a true .NET Core project; it is at present merely a proof of concept to demonstrate how to use this .NET Core version of Expressive Annotations within a .NET Core application. The parts of the sample that have been removed do currently provoke some errors and warnings in the console.
 
 ### <a id="what-are-a-brief-examples-of-usage">What are a brief examples of usage?</a>
 
-This section presents few exemplary code snippets. Sample projects in the section above contain much more comprehensive set of use cases.
+This section presents few exemplary code snippets. The sample project in the section above contains a much more comprehensive set of use cases.
 
-```C#
+```csharp
 using ExpressiveAnnotations.Attributes;
 
 [RequiredIf("GoAbroad == true")]
@@ -85,7 +196,7 @@ Above we are saying, that annotated field is required when condition given in th
 
 Simple enough, let's move to another variation:
 
-```C#
+```csharp
 [AssertThat("ReturnDate >= Today()")]
 public DateTime? ReturnDate { get; set; }
 ```
@@ -94,7 +205,7 @@ By the usage of this attribute type, we are not validating field requirement as 
 
 As shown below, both types of attributes may be combined (moreover, the same type can be applied multiple times for a single field):
 
-```C#
+```csharp
 [RequiredIf("Details.Email != null")]
 [RequiredIf("Details.Phone != null")]
 [AssertThat("AgreeToContact == true")]
@@ -105,7 +216,7 @@ Literal translation means, that if either email or phone is provided, you are fo
 
 The complexity of expressions may be arbitrarily increased, e.g. take a brief look at the following construction:
 
-```C#
+```csharp
 [RequiredIf(@"GoAbroad == true
               && (
                      (NextCountry != 'Other' && NextCountry == Country)
@@ -118,14 +229,14 @@ Restriction above, despite being more specific than its predecessors, still can 
 
 Conditional operations are supported (ternary operator defined). You can imply various assertions on specific field based on certain condition (or nested conditions), e.g.
 
-```C#
+```csharp
 [AssertThat("Switch == 'ON' ? Voltage1 == Voltage2 : true")]
 public int Voltage1 { get; set; }
 ```
 
 Here, when switch is ON, voltages must be equal - otherwise everything is OK. You could express the same statement without conditional operator, i.e.
 
-```C#
+```csharp
 [AssertThat("Switch == 'ON' && (Voltage1 == Voltage2) || (Switch != 'ON')")]
 ```
 
@@ -137,7 +248,7 @@ With **declarative** programming you write logic that expresses *what* you want,
 
 In our case, this concept is materialized by attributes, e.g.
 
-```C#
+```csharp
 [RequiredIf("GoAbroad == true && NextCountry != 'Other' && NextCountry == Country",
     ErrorMessage = "If you plan to travel abroad, why visit the same country twice?")]
 public string ReasonForTravel { get; set; }
@@ -149,7 +260,7 @@ With **imperative** programming you define the control flow of the computation w
 
 If we choose this way instead of model fields decoration, it has negative impact on the complexity of the code. Logic responsible for validation is now implemented somewhere else in our application, e.g. inside controllers actions instead of model class itself:
 
-```C#
+```csharp
     if (!model.GoAbroad)
         return View("Success");
     if (model.NextCountry == "Other")
@@ -364,7 +475,7 @@ The following table lists the precedence and associativity of operators (listed 
 
 As already noted, there is an option to reinforce expressions with functions, e.g.
 
-```C#
+```csharp
 [AssertThat("StartsWith(CodeName, 'abc.') || EndsWith(CodeName, '.xyz')")]
 public string CodeName { get; set; }
 ```
@@ -440,7 +551,7 @@ Toolchain functions available out of the box at server- and client-side:
 
 ##### <a id="signatures">Signatures description</a>
 
-```C#
+```csharp
 RequiredIfAttribute(
     string expression,
     [bool AllowEmptyStrings],
@@ -479,7 +590,7 @@ Note above covers almost exhaustively what is actually needed to work with EA. N
 
 ##### <a id="implementation">Implementation details outline</a>
 
-Implementation core is based on [expressions parser](src/ExpressiveAnnotations/Analysis/Parser.cs?raw=true), which runs on the grammar [shown above](#grammar-definition).
+Implementation core is based on [expressions parser](src/UoN.ExpressiveAnnotations.NetCore/Analysis/Parser.cs?raw=true), which runs on the grammar [shown above](#grammar-definition).
 
 Firstly, at the lexical analysis stage, character stream of the expression is converted into token stream (whitespaces ignored, characters grouped into tokens and associated with position in the text). Next, at the syntax analysis level, abstract syntax tree is constructed according to the rules defined by the grammar. While the tree is being built, also the 3rd stage, mainly semantic analysis, is being performed. This stage is directly related to operands type checking (and eventual type conversions according to type generalization rules, when incompatible types are detected).
 
@@ -491,6 +602,8 @@ For the sake of performance optimization, expressions provided to attributes are
 
 When working with ASP.NET MVC stack, unobtrusive client-side validation mechanism is [additionally available](#what-about-the-support-of-aspnet-mvc-client-side-validation). Client receives unchanged expression string from server. Such an expression is then evaluated using JavaScript [`eval()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval) method within the context of reflected model object. Such a model, analogously to the server-side one, is basically deserialized DOM form (with some type-safety assurances and registered toolchain methods).
 
+Note that neither the server-side parser nor the client-side validation mechanism, as described above, have been changed in the `UoN.ExpressiveAnnotation.NETCore` version.
+
 ##### <a id="traps">Traps (discrepancies between server- and client-side expressions evaluation)</a>
 
 Because client-side handles expressions in its unchanged form (as provided to attribute), attention is needed when dealing with `null` keyword - there are discrepancies between EA parser (mostly follows C# rules) and JavaScript, e.g.
@@ -500,50 +613,6 @@ Because client-side handles expressions in its unchanged form (as provided to at
 * `null > -1`     - in C# `false` , in JS `true`,
 * and more...
 
-### <a id="what-about-the-support-of-aspnet-mvc-client-side-validation">What about the support of ASP.NET MVC client-side validation?</a>
-
-Client-side validation is fully supported. Enable it for your web project within the next few steps:
-
-1. Reference both assemblies to your project: core [**ExpressiveAnnotations.dll**](src/ExpressiveAnnotations) (defines validation attributes driven by expressions) and subsidiary [**ExpressiveAnnotations.MvcUnobtrusive.dll**](src/ExpressiveAnnotations.MvcUnobtrusive) (defines model validators for ASP.NET MVC).
-2. In Global.asax register required validators (`IClientValidatable` interface is not directly implemented by the attributes, to avoid coupling of ExpressionAnnotations assembly with System.Web.Mvc dependency):
-
-    ```C#
-    using ExpressiveAnnotations.Attributes;
-    using ExpressiveAnnotations.MvcUnobtrusive.Validators;
-
-    protected void Application_Start()
-    {
-        DataAnnotationsModelValidatorProvider.RegisterAdapter(
-            typeof (RequiredIfAttribute), typeof (RequiredIfValidator));
-        DataAnnotationsModelValidatorProvider.RegisterAdapter(
-            typeof (AssertThatAttribute), typeof (AssertThatValidator));
-    ```
-    
-    Alternatively, use predefined `ExpressiveAnnotationsModelValidatorProvider` (recommended):
-    
-    ```C#
-    using ExpressiveAnnotations.MvcUnobtrusive.Providers;
-
-    protected void Application_Start()
-    {
-        ModelValidatorProviders.Providers.Remove(
-            ModelValidatorProviders.Providers
-                .FirstOrDefault(x => x is DataAnnotationsModelValidatorProvider));
-        ModelValidatorProviders.Providers.Add(
-            new ExpressiveAnnotationsModelValidatorProvider());
-    ```
-    
-    Despite the fact this provider automatically registers adapters for expressive validation attributes, it additionally respects their processing priorities when validation is performed (i.e. the [`Priority`](#signatures) property actually means something in practice).
-3. Include [**expressive.annotations.validate.js**](src/expressive.annotations.validate.js?raw=true) script (makes client-side validation to work out of the box) in your page. It should be included in bundle below jQuery validation files:
-
-    ```JavaScript
-    <script src="/Scripts/jquery.validate.js"></script>
-    <script src="/Scripts/jquery.validate.unobtrusive.js"></script>
-    ...
-    <script src="/Scripts/expressive.annotations.validate.js"></script>
-    ```
-
-For supplementary reading visit the [installation section](#installation).
 
 ### <a id="frequently-asked-questions">Frequently asked questions</a>
 
@@ -551,7 +620,7 @@ For supplementary reading visit the [installation section](#installation).
 
 Yes, a complete list of types with annotations can be retrieved and compiled collectively. It can be useful, e.g. during unit testing phase, when without the necessity of your main application startup, all the compile-time errors (syntax errors, type checking errors) done to your expressions can be discovered. The following extension is helpful:
 
-```C#
+```csharp
 public static IEnumerable<ExpressiveAttribute> CompileExpressiveAttributes(this Type type)
 {
     var properties = type.GetProperties()
@@ -569,7 +638,7 @@ public static IEnumerable<ExpressiveAttribute> CompileExpressiveAttributes(this 
 
 with the succeeding usage manner:
 
-```C#
+```csharp
 // compile all expressions for specified model:
 var compiled = typeof (SomeModel).CompileExpressiveAttributes().ToList();
 
@@ -586,19 +655,19 @@ compiled = AppDomain.CurrentDomain.GetAssemblies()
 Notice that such compiled lambdas will be cached inside attributes instances stored in `compiled` list.
 That means that subsequent compilation requests:
 
-```C#
+```csharp
 compiled.ForEach(x => x.Compile(typeof (SomeModel));
 ```
 
 do nothing (due to optimization purposes), unless invoked with enabled recompilation switch:
 
-```C#
+```csharp
 compiled.ForEach(x => x.Compile(typeof (SomeModel), force: true);
 ```
 
 Finally, this solution reveals compile-time errors only, you can still can get runtime errors though, e.g.:
 
-```C#
+```csharp
 var parser = new Parser();
 parser.AddFunction<object, bool>("CastToBool", obj => (bool) obj);
 
@@ -610,7 +679,7 @@ parser.Parse<object>("CastToBool(null)").Invoke(null); // invocation fails (type
 
 Create it yourself. Any custom function defined within the model class scope at server-side is automatically recognized and can be used inside expressions, e.g.
 
-```C#
+```csharp
 class Model
 {
     public bool IsBloodType(string group)
@@ -633,13 +702,15 @@ class Model
 
 Many signatures can be defined for a single function name. Types are not taken under consideration as a differentiating factor though. Methods overloading is based on the number of arguments only. Functions with the same name and exact number of arguments are considered as ambiguous. The next issue important here is the fact that custom methods take precedence over built-in ones. If exact signatures are provided built-in methods are simply overridden by new definitions.
 
-##### <a id="can-I-have-custom-utility-like-functions-outside-of-my-models">Can I have custom utility-like functions outside of my models?
+##### <a id="can-I-have-custom-utility-like-functions-outside-of-my-models">Can I have custom utility-like functions outside of my models?</a>
+
+(Note that the following does not work in the same way in .NET Core; it might be quite easy to get this working, but some investigation will be required)
 
 Sure, provide your own methods provider, or extend existing global one, i.e.
 
 * extend existing provider:
 
- ```C#
+ ```csharp
     protected void Application_Start()
     {
         Toolchain.Instance.AddFunction<int[], int>("ArrayLength", array => array.Length);
@@ -647,7 +718,7 @@ Sure, provide your own methods provider, or extend existing global one, i.e.
 
 * define new provider:
 
- ```C#
+ ```csharp
     public class CustomFunctionsProvider : IFunctionsProvider
     {
         public IDictionary<string, IList<LambdaExpression>> GetFunctions()
@@ -666,11 +737,13 @@ Sure, provide your own methods provider, or extend existing global one, i.e.
 
 ##### <a id="how-to-cope-with-values-of-custom-types">How to cope with values of custom types?</a>
 
+Note that ValueParser has not yet been implemented in `UoN.ExpressiveAnnotations.NetCore`, so the following doesn't work in .Net Core at present.
+
 If you need to handle value string extracted from DOM field in any non built-in way, you can redefine given type-detection logic. The default mechanism recognizes and handles automatically types identified as: `timespan`, `datetime`, `enumeration`, `number`, `string`, `bool` and `guid`. If non of them is matched for a particular field, JSON deserialization is invoked. You can provide your own deserializers though. The process is as follows:
 
 * at server-side decorate your property with special attribute which gives a hint to client-side, which parser should be chosen for corresponding DOM field value deserialization:
 
-    ```C#
+    ```csharp
     class Model
     {
         [ValueParser('customparser')]
@@ -701,13 +774,15 @@ If you redefine default mechanism, you can still have the `ValueParser` annotati
 
 ##### <a id="how-to-cope-with-dates-given-in-non-standard-formats">How to cope with dates given in non-standard formats?</a>
 
+Note that `ValueParser` has not yet been implemented in `UoN.ExpressiveAnnotations.NetCore`, so the following doesn't work in .Net Core at present.
+
 When values of DOM elements are extracted, they are converted to appropriate types. For fields containing date strings, JavaScript `Date.parse()` method is used by default. As noted in [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse), the input parameter is:
 
 >A string representing an RFC 2822 or ISO 8601 date (other formats may be used, but results may be unexpected)
 
 When some non-standard format needs to be handled, simply override the default behavior and provide your own implementation. E.g. when dealing with UK format dd/mm/yyyy, solution is:
 
-```C#
+```csharp
 class Model
 {
     [ValueParser('ukdateparser')]
@@ -755,6 +830,26 @@ Alternatively, to enforce re-binding of already attached validation handlers, us
     ea.settings.apply({
         dependencyTriggers: 'new set of events'
     });
+```
+
+
+The default behaviour of jQuery Validate is to not validate (client-side) until the form is submitted, and thereafter to validate, on change, any fields that have previously failed validation - and only those fields. The rest are not validated until the next Submit.
+
+In implementing `UoN.ExpressiveAnnotations.NetCore`, we found it preferable that, after submit, ALL fields are validated on change. This means that, after a form has been submitted with errors, if the user then invalidates one of the fields that was valid when the form was submitted, they get immediate feedback about that, rather than getting immediate feedback only for some of the fields and then getting further feedback when they submit again with further errors. This behaviour is particularly noticeable in some of the more complex scenarios that Expressive Annotations allows, where the validation rules for some fields (which may initially be hidden) are dependent on the values of other fields elsewhere on the form.
+
+In order to obtain the behaviour we desire, when the form is submitted we add ALL inputs to jquery-validation's validator.submitted array, which is how it keeps track of fields that have previously failed validation.
+
+```Javascript
+<script>
+$(".js--myformsubmitbutton").click(e => {
+  const form = e.target.closest("form");
+  const validator = $(form).validate();
+
+  $("input").each(function() {
+    validator.submitted[$(this).attr("name")] = "Invalid";
+  });
+});
+</script>
 ```
 
 ##### <a id="can-i-increase-web-console-verbosity-for-debug-purposes">Can I increase web console verbosity for debug purposes?</a>
@@ -805,7 +900,7 @@ Simply access it through the `__meta__` property of `this` scope, e.g.
 
 Alternatively, you can pass the field name to the method and then look for it, e.g.
 
-```C#
+```csharp
 [AssertThat("Method('SomeField')")]
 public string SomeField { get; set; }
 ```
@@ -847,7 +942,7 @@ The parameters are as follows:
 
 ##### <a id="can-i-decorate-conditionally-required-fields-with-asterisks">Can I decorate conditionally required fields with asterisks?</a>
 
-EA does not provide any built-in mechanisms to manipulate DOM. Nevertheless, the asterisk decoration (or any similar effect) can be relatively easily achieved with the support of a supplementary code you could write for yourself. It will be based on the [`eavalid`](#is-there-any-event-raised-when-validation-is-done) events handling. Such an event type is triggered by EA when a field validation is performed. Please take a look at the snippet below (or run [web sample](src/ExpressiveAnnotations.MvcWebSample) to see it working):
+EA does not provide any built-in mechanisms to manipulate DOM. Nevertheless, the asterisk decoration (or any similar effect) can be relatively easily achieved with the support of a supplementary code you could write for yourself. It will be based on the [`eavalid`](#is-there-any-event-raised-when-validation-is-done) events handling. Such an event type is triggered by EA when a field validation is performed. Please take a look at the snippet below (or run [the web sample from Expressive Annotations](https://github.com/jwaliszko/ExpressiveAnnotations/tree/master/src/ExpressiveAnnotations.MvcWebSample) to see it working):
 
 ```JavaScript
 <script>
@@ -918,7 +1013,7 @@ For the needs of this example, the code above makes assumptions:
 
 * implicit `data-val-required` attributes addition is disabled for value types in HTML (edit `Global.asax`):
 
-    ```C#
+    ```csharp
     protected void Application_Start()
     {
         DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
@@ -928,7 +1023,7 @@ For the needs of this example, the code above makes assumptions:
 
 In this case you need to have a back reference to your container, i.e.
 
-```C#
+```csharp
 public class TParent
 {
     public TParent()
@@ -957,7 +1052,7 @@ In this exemplary case above, the `Flag` property used in the expression `Parent
 
 The solution is to provide such a field, EA expects to find, i.e.
 
-```C#
+```csharp
 @Html.HiddenFor(m => m.Child.Parent.Flag) // hidden mock
 ```
 
@@ -990,12 +1085,12 @@ Make sure `RequiredIf` is applied to a field which *accepts null values*.
 
 In the other words, it is redundant to apply this attribute to a field of non-nullable [value type](https://msdn.microsoft.com/en-us/library/s1ax56ch.aspx), like e.g. `int`, which is a struct representing integral numeric type, `DateTime`, etc. Because the value of such a type is always non-null, requirement demand is constantly fulfilled. Instead, for value types use their nullable forms, e.g. `int?`, `DateTime?`, etc.
 
-```C#
+```csharp
 [RequiredIf("true")] // no effect...
 public int Value { get; set; } // ...unless int? is used
 ```
 
-```C#
+```csharp
 [RequiredIf("true")] // no effect...
 public DateTime Value { get; set; } // ...unless DateTime? is used
 ```
@@ -1016,7 +1111,7 @@ Such a fields are ignored by default by jquery-validation plugin, and EA follows
 
 ##### <a id="client---side-validation-doesnt-work-how-to-troubleshoot-it">Client-side validation doesn't work, how to troubleshoot it?</a>
 
-* Check whether setup is done correctly, as described in the [installation section](#what-about-the-support-of-aspnet-mvc-client-side-validation) of this document.
+* Check whether setup is done correctly, as described in the [usage section](#Usage) of this document.
 * Verify if the HTML code generated by the HTML helpers contains all the `data-val-*` attributes used by EA, with correct names (the same as used in related expressions).
 * Check whether *jquery.validate.js* and *jquery.validate.unobtrusive.js* are not accidentaly loaded twice on the page.
 * Verify if simple `Required` attribute works at client-side - if not, it most likely means your issue is not related to EA script.
@@ -1027,36 +1122,25 @@ Such a fields are ignored by default by jquery-validation plugin, and EA follows
 
 ##### <a id="is-there-a-possibility-to-perform-asynchronous-validation">Is there a possibility to perform asynchronous validation?</a> 
 
-Currently not. Although there is an ongoing work on [async-work branch](https://github.com/jwaliszko/ExpressiveAnnotations/tree/async-work), created especially for asynchronous-related ideas. If you feel you'd like to contribute, either by providing better solution, review code or just test what is currently there, your help is always highly appreciated.
+Currently not. Although there is an ongoing work on [async-work branch of Expressive Annotations](https://github.com/jwaliszko/ExpressiveAnnotations/tree/async-work), created especially for asynchronous-related ideas. If you feel you'd like to contribute, either by providing better solution, review code or just test what is currently there, your help is always highly appreciated.
 
 ##### <a id="what-if-my-question-is-not-covered-by-faq-section">What if my question is not covered by FAQ section?</a>
 
 If you're searching for an answer to some other problem, not covered by this document, try to browse through [already posted issues](../../issues?q=label%3Aquestion) labelled by *question* tag, or possibly have a look [at Stack Overflow](http://stackoverflow.com/search?tab=newest&q=expressiveannotations).
 
-### <a id="installation">Installation instructions</a>
-
-Simplest way is using the [NuGet](https://www.nuget.org) Package Manager Console:
-
-* [complete package](https://www.nuget.org/packages/ExpressiveAnnotations) - both assemblies and the script included (allows [complete MVC validation](#what-about-the-support-of-aspnet-mvc-client-side-validation)):
-
-    [![NuGet complete](https://img.shields.io/nuget/v/ExpressiveAnnotations.svg)](http://nuget.org/packages/ExpressiveAnnotations)
-
-    ### `PM> Install-Package ExpressiveAnnotations`
-
-* [minimal package](https://www.nuget.org/packages/ExpressiveAnnotations.dll) - core assembly only (MVC-related client-side coating components excluded):
-
-    [![NuGet minimal](https://img.shields.io/nuget/v/ExpressiveAnnotations.dll.svg)](http://nuget.org/packages/ExpressiveAnnotations.dll)
-
-    ### `PM> Install-Package ExpressiveAnnotations.dll`
 
 ### <a id="contributors">Contributors</a>
 
 [GitHub Users](../../graphs/contributors)
 
-Special thanks to Szymon Małczak
+Expressive Annotations by Jarosław Waliszko, with special thanks to Szymon Małczak.
+
+`UoN.ExpressiveAnnotations.NetCore` by Mark Berry for The University of Nottingham, with special thanks to Jon Couldridge
 
 ### <a id="license">License</a>
 
-Copyright (c) 2014 Jarosław Waliszko
+Original work Copyright (c) 2014 Jarosław Waliszko
+
+Modified work Copyright (c) 2018 The University of Nottingham
 
 Licensed MIT: http://opensource.org/licenses/MIT
