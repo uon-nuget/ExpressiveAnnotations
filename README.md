@@ -54,10 +54,10 @@ The required Javascript files are all available from [npm:](https://www.npmjs.co
 ```
 
 ### Referencing the javascript files
-Depending on how you build your Javascript files, you may need some kind of build step to get the JS files into the right place for your project. The UoN.ExpressiveAnnotations.NetCoreSample project in this solution uses [Library Manager](https://blogs.msdn.microsoft.com/webdev/2018/04/17/library-manager-client-side-content-manager-for-web-apps/), which is built in to Visual Studio from 15.8 onwards (April 2018). You can see how the NetCoreSample uses Library Manager [here](https://github.com/uon-nuget/ExpressiveAnnotations/blob/master/src/UoN.ExpressiveAnnotations.NetCoreSample/libman.json). 
-The NetCore sample also uses the [BuildBundlerMinifier](https://docs.microsoft.com/en-us/aspnet/core/client-side/bundling-and-minification?view=aspnetcore-2.1&tabs=visual-studio%2Caspnetcore2x) package to produce minified JS and CSS for production; you can see how it configures this [here](https://github.com/uon-nuget/ExpressiveAnnotations/blob/master/src/UoN.ExpressiveAnnotations.NetCoreSample/bundleconfig.json).
+Depending on how you build your Javascript files, you may need some kind of build step to get the JS files into the right place for your project. The UoN.ExpressiveAnnotations.NetCoreSample project in this solution uses [Library Manager](https://blogs.msdn.microsoft.com/webdev/2018/04/17/library-manager-client-side-content-manager-for-web-apps/), which is built in to Visual Studio from 15.8 onwards (April 2018). You can see how the NetCoreSample uses Library Manager [here](./src/UoN.ExpressiveAnnotations.NetCoreSample/libman.json). 
+The NetCore sample also uses the [BuildBundlerMinifier](https://docs.microsoft.com/en-us/aspnet/core/client-side/bundling-and-minification?view=aspnetcore-2.1&tabs=visual-studio%2Caspnetcore2x) package to produce minified JS and CSS for production; you can see how it configures this [here](./src/UoN.ExpressiveAnnotations.NetCoreSample/bundleconfig.json).
 
-When referencing the javascript files in your views or layout, note that `expressive.annotations.validate.js` must be included **after** the jquery js files. Be careful not to include any of the js files twice, as this has been known to cause errors. The NetCore Sample project includes the javascript files in [_Layout.cshtml](https://github.com/uon-nuget/ExpressiveAnnotations/blob/master/src/UoN.ExpressiveAnnotations.NetCoreSample/Views/Shared/_Layout.cshtml) and [_ValidationScriptsPartial](https://github.com/uon-nuget/ExpressiveAnnotations/blob/master/src/UoN.ExpressiveAnnotations.NetCoreSample/Views/Shared/_ValidationScriptsPartial.cshtml), as follows:
+When referencing the javascript files in your views or layout, note that `expressive.annotations.validate.js` must be included **after** the jquery js files. Be careful not to include any of the js files twice, as this has been known to cause errors. The NetCore Sample project includes the javascript files in [_Layout.cshtml](./src/UoN.ExpressiveAnnotations.NetCoreSample/Views/Shared/_Layout.cshtml) and [_ValidationScriptsPartial](./src/UoN.ExpressiveAnnotations.NetCoreSample/Views/Shared/_ValidationScriptsPartial.cshtml), as follows:
 
 ```xml
     <environment include="Development">
@@ -177,7 +177,7 @@ Declarative validation when [compared](#declarative-vs-imperative-programming---
 
 ### <a id="sample-project">Sample project</a>
 
-* [**.NET Core sample**](src/UoN.ExpressiveAnnotations.NetCoreSample)
+* [**.NET Core sample**](./src/UoN.ExpressiveAnnotations.NetCoreSample)
 
 This sample project is a .NET Core 2.1 re-work of Jarosław's MvcWebSample with several features of that sample, and all tests, removed. A few parts of the project have been reworked to take advantage of new features of .NET Core, but only where required to get the project to run under .NET Core. As such, there is still some work to do to make this a true .NET Core project; it is at present merely a proof of concept to demonstrate how to use this .NET Core version of Expressive Annotations within a .NET Core application. The parts of the sample that have been removed do currently provoke some errors and warnings in the console.
 
@@ -590,7 +590,7 @@ Note above covers almost exhaustively what is actually needed to work with EA. N
 
 ##### <a id="implementation">Implementation details outline</a>
 
-Implementation core is based on [expressions parser](src/ExpressiveAnnotations/Analysis/Parser.cs?raw=true), which runs on the grammar [shown above](#grammar-definition).
+Implementation core is based on [expressions parser](src/UoN.ExpressiveAnnotations.NetCore/Analysis/Parser.cs?raw=true), which runs on the grammar [shown above](#grammar-definition).
 
 Firstly, at the lexical analysis stage, character stream of the expression is converted into token stream (whitespaces ignored, characters grouped into tokens and associated with position in the text). Next, at the syntax analysis level, abstract syntax tree is constructed according to the rules defined by the grammar. While the tree is being built, also the 3rd stage, mainly semantic analysis, is being performed. This stage is directly related to operands type checking (and eventual type conversions according to type generalization rules, when incompatible types are detected).
 
@@ -774,7 +774,7 @@ If you redefine default mechanism, you can still have the `ValueParser` annotati
 
 ##### <a id="how-to-cope-with-dates-given-in-non-standard-formats">How to cope with dates given in non-standard formats?</a>
 
-Note that ValueParser has not yet been implemented in UoN.ExpressiveAnnotations.NetCore, so the following doesn't work in .NetCore at present.
+Note that `ValueParser` has not yet been implemented in UoN.ExpressiveAnnotations.NetCore, so the following doesn't work in .NetCore at present.
 
 When values of DOM elements are extracted, they are converted to appropriate types. For fields containing date strings, JavaScript `Date.parse()` method is used by default. As noted in [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse), the input parameter is:
 
@@ -942,7 +942,7 @@ The parameters are as follows:
 
 ##### <a id="can-i-decorate-conditionally-required-fields-with-asterisks">Can I decorate conditionally required fields with asterisks?</a>
 
-EA does not provide any built-in mechanisms to manipulate DOM. Nevertheless, the asterisk decoration (or any similar effect) can be relatively easily achieved with the support of a supplementary code you could write for yourself. It will be based on the [`eavalid`](#is-there-any-event-raised-when-validation-is-done) events handling. Such an event type is triggered by EA when a field validation is performed. Please take a look at the snippet below (or run [web sample](src/ExpressiveAnnotations.MvcWebSample) to see it working):
+EA does not provide any built-in mechanisms to manipulate DOM. Nevertheless, the asterisk decoration (or any similar effect) can be relatively easily achieved with the support of a supplementary code you could write for yourself. It will be based on the [`eavalid`](#is-there-any-event-raised-when-validation-is-done) events handling. Such an event type is triggered by EA when a field validation is performed. Please take a look at the snippet below (or run [the web sample from Expressive Annotations](https://github.com/jwaliszko/ExpressiveAnnotations/tree/master/src/ExpressiveAnnotations.MvcWebSample) to see it working):
 
 ```JavaScript
 <script>
@@ -1122,7 +1122,7 @@ Such a fields are ignored by default by jquery-validation plugin, and EA follows
 
 ##### <a id="is-there-a-possibility-to-perform-asynchronous-validation">Is there a possibility to perform asynchronous validation?</a> 
 
-Currently not. Although there is an ongoing work on [async-work branch](https://github.com/jwaliszko/ExpressiveAnnotations/tree/async-work), created especially for asynchronous-related ideas. If you feel you'd like to contribute, either by providing better solution, review code or just test what is currently there, your help is always highly appreciated.
+Currently not. Although there is an ongoing work on [async-work branch of Expressive Annotations](https://github.com/jwaliszko/ExpressiveAnnotations/tree/async-work), created especially for asynchronous-related ideas. If you feel you'd like to contribute, either by providing better solution, review code or just test what is currently there, your help is always highly appreciated.
 
 ##### <a id="what-if-my-question-is-not-covered-by-faq-section">What if my question is not covered by FAQ section?</a>
 
