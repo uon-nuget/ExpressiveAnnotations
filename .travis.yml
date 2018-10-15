@@ -1,0 +1,12 @@
+language: csharp
+mono: none
+dotnet: 2.1.0
+dist: trusty
+script:
+ - dotnet build ./src/UoN.ExpressiveAnnotations.NetCore -c Release
+ - dotnet pack ./src/UoN.ExpressiveAnnotations.NetCore -c Release --no-build
+after_success:
+ - |
+    (test $TRAVIS_BRANCH = "master" || test $TRAVIS_BRANCH = "prerelease") && \
+    test $TRAVIS_PULL_REQUEST = "false" && \
+    dotnet nuget push **/*.nupkg -k $NUGET_API_KEY -s https://www.nuget.org/api/v2/package
