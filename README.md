@@ -9,18 +9,18 @@ A small .NET library forked from Jarosław Waliszko's [Expressive Annotations](h
 
 ## What does it do?
 
-Usage and functionality are unchanged from Jarosław's .NET Framework version. Expressive Annotations adds two new validation attributes to .NET's built-in [validation attributes](https://docs.microsoft.com/en-us/aspnet/core/mvc/models/validation) ('Required', 'Range', 'RegularExpression', etc):
+Usage and functionality are unchanged from Jarosław's .NET Framework version. Expressive Annotations adds two new validation attributes to .NET's built-in [validation attributes](https://docs.microsoft.com/en-us/aspnet/core/mvc/models/validation) (`Required`, `Range`, `RegularExpression`, etc):
 
-* RequiredIf - The annotated field is required to be non-null if the given condition is satisfied.
-* AssertThat - The annotated field is considered to be valid if the given condition is satisfied.
+* `RequiredIf` - The annotated field is required to be non-null if the given condition is satisfied.
+* `AssertThat` - The annotated field is considered to be valid if the given condition is satisfied.
 
-Conditions are specified as expressions within the attributes, using Expressive Annotations' [expressions syntax](#expressions-specification). In addition to the usual arithmetic, relational and logical operators, the syntax provides 30 [built-in ToolChain functions](#built-in-functions) such as Today(), Length(), Concat(), StartsWith(), IsEmail(), Average(), etc. It's also possible to make calls to your own [custom-designed functions](#what-if-there-is-no-built-in-function-i-need) from within condition expressions.
+Conditions are specified as expressions within the attributes, using Expressive Annotations' [expressions syntax](#expressions-specification). In addition to the usual arithmetic, relational and logical operators, the syntax provides 30 [built-in ToolChain functions](#built-in-functions) such as `Today()`, `Length()`, `Concat()`, `StartsWith()`, `IsEmail()`, `Average()`, etc. It's also possible to make calls to your own [custom-designed functions](#what-if-there-is-no-built-in-function-i-need) from within condition expressions.
 
 ## Dependencies
 
 The library targets `netstandard2.0` and depends upon ASP.Net Core 2.1 MVC and Newtonsoft JSON 11.0.2.
 
-To use client-side validation you'll also need to include Jarosław's expressive.annotations.validate.js, as well as jquery.js, jquery.validate.js and jquery.validate.unobtrusive.js.
+To use client-side validation you'll also need to include Jarosław's `expressive.annotations.validate.js`, which depends on `jquery.js`, `jquery.validate.js` and `jquery.validate.unobtrusive.js`.
 
 ## <span id="usage">Usage</span>
 
@@ -28,109 +28,36 @@ To use Expressive Annotations in your .NET Core project:
 
 * Add the library to your project
 * Add the required javascript files to your project and include them in your layout or views
-* Add code to startup to configure an HttpContextAccessor for the RequestStorage class
+* Add code to startup to configure an `HttpContextAccessor` for the `RequestStorage` class
 * Add validation attributes as annotations to the properties you want to validate
 
 ### Acquiring the library
 
 #### NuGet
 
-This library is available from [nuget.org](https://www.nuget.org/packages/UoN.ExpressiveAnnotations.NetCore/)
+The library is available from [nuget.org](https://www.nuget.org/packages/UoN.ExpressiveAnnotations.NetCore/)
 
 #### Build from source
 
-We recommend building with the dotnet cli, but since the package targets `netstandard2.0` and depends only on ASP.Net Core 2.0 MVC, you should be able to build it in any tooling that supports those requirements.
+We recommend building with the `dotnet` cli, but since the package targets `netstandard2.0` and depends only on other `netstandard2.0` libraries, you should be able to build it in any tooling that supports those requirements.
 
-- Have the .NET Core SDK 2.0 or newer
-- dotnet build
-- Optionally dotnet pack
+- Have the .NET Core SDK 2.1 or newer
+- `dotnet build`
+- Optionally `dotnet pack`
 - Reference the resulting assembly, or NuGet package.
 
 ### Acquiring the javascript
-The required Javascript files are all available from [npm](https://www.npmjs.com/package/expressive-annotations-validate)
+The required Javascript files are all available from [npm:](https://www.npmjs.com/package/expressive-annotations-validate)
 
-Add to your package.json:
-
-```json
-{
-    "devDependencies": {
-        "expressive-annotations-validate": "2.7.4",
-        "jquery": "3.3.1",
-        "jquery-validation": "1.17.0",
-        "jquery-validation-unobtrusive": "3.2.10"
-    }
-}
 ```
-### Deploying the javascript files
-If you're using Gulp, or Bower, use that to deploy the javascript files in the same way as the rest of your javascript files.
-
-The UoN.ExpressiveAnnotations.NetCoreSample project in this solution uses [Library Manager](https://blogs.msdn.microsoft.com/webdev/2018/04/17/library-manager-client-side-content-manager-for-web-apps/), which is built in to Visual Studio from 15.8 onwards (April 2018). Its libman.json looks like this:
-
-```json
-{
-    "version": "1.0",
-    "defaultProvider": "filesystem",
-    "libraries": [
-        {
-            "library": "node_modules/expressive-annotations-validate/dist/",
-            "files": [ "expressive.annotations.validate.js" ],
-            "destination": "wwwroot/js"
-        },
-        {
-            "library": "node_modules/jquery/dist",
-            "files": [ "jquery.js" ],
-            "destination": "wwwroot/js"
-        },
-        {
-            "library": "node_modules/jquery-validation/dist",
-            "files": [ "jquery.validate.js" ],
-            "destination": "wwwroot/js"
-        },
-        {
-            "library": "node_modules/jquery-validation-unobtrusive/dist",
-            "files": [ "jquery.validate.unobtrusive.js" ],
-            "destination": "wwwroot/js"
-        }
-
-    ]
-}
-```
-
-The NetCore sample uses the [BuildBundlerMinifier](https://docs.microsoft.com/en-us/aspnet/core/client-side/bundling-and-minification?view=aspnetcore-2.1&tabs=visual-studio%2Caspnetcore2x) package to produce minified JS and CSS for production; its bundleconfig.json looks like this:
-
-```json
-[
-    {
-        "outputFileName": "wwwroot/js/site.min.js",
-        "inputFiles": [
-            "node_modules/expressive-annotations-validate/dist/expressive.annotations.validate.js",
-            "node_modules/jquery/dist/jquery.js",
-            "node_modules/jquery-validation/dist/jquery.validate.js",
-            "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js"
-        ],
-        "minify": {
-            "enabled": true,
-            "renameLocals": true
-        },
-        "sourceMap": false
-    },
-
-    {
-        "outputFileName": "wwwroot/css/site.min.css",
-        "inputFiles": [
-            "wwwroot/css/site.css"
-        ],
-        "minify": {
-            "enabled": true,
-            "renameLocals": true
-        },
-        "sourceMap": false
-    }
-]
+    npm install expressive-annotations-validate
 ```
 
 ### Referencing the javascript files
-Note that expressive.annotations.validate.js must be included **after** the jquery js files. Be careful not to include any of the js files twice. The NetCore Sample project includes the javascript files as follows:
+Depending on how you build your Javascript files, you may need some kind of build step to get the JS files into the right place for your project. The UoN.ExpressiveAnnotations.NetCoreSample project in this solution uses [Library Manager](https://blogs.msdn.microsoft.com/webdev/2018/04/17/library-manager-client-side-content-manager-for-web-apps/), which is built in to Visual Studio from 15.8 onwards (April 2018). You can see how the NetCoreSample uses Library Manager [here](https://github.com/uon-nuget/ExpressiveAnnotations/blob/master/src/UoN.ExpressiveAnnotations.NetCoreSample/libman.json). 
+The NetCore sample also uses the [BuildBundlerMinifier](https://docs.microsoft.com/en-us/aspnet/core/client-side/bundling-and-minification?view=aspnetcore-2.1&tabs=visual-studio%2Caspnetcore2x) package to produce minified JS and CSS for production; you can see how it configures this [here](https://github.com/uon-nuget/ExpressiveAnnotations/blob/master/src/UoN.ExpressiveAnnotations.NetCoreSample/bundleconfig.json).
+
+When referencing the javascript files in your views or layout, note that `expressive.annotations.validate.js` must be included **after** the jquery js files. Be careful not to include any of the js files twice, as this has been known to cause errors. The NetCore Sample project includes the javascript files in [_Layout.cshtml](https://github.com/uon-nuget/ExpressiveAnnotations/blob/master/src/UoN.ExpressiveAnnotations.NetCoreSample/Views/Shared/_Layout.cshtml) and [_ValidationScriptsPartial](https://github.com/uon-nuget/ExpressiveAnnotations/blob/master/src/UoN.ExpressiveAnnotations.NetCoreSample/Views/Shared/_ValidationScriptsPartial.cshtml), as follows:
 
 ```xml
     <environment include="Development">
@@ -144,19 +71,19 @@ Note that expressive.annotations.validate.js must be included **after** the jque
     </environment>
 ```
 
-### Add code to startup
-In your project's Startup.cs, add the following to the end of Configure():
+### Add code to `Startup`
+In your project's `Startup.cs`, add the following to the end of `Configure()`:
 
 ```csharp
     RequestStorage.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
 ```
-This gives Expressive Annotations' request storage static class access to the HttpContextAccessor, so that it can get the HttpContext, which is used to store the per-context cache. You should also add the following to ConfigureServices():
+This gives Expressive Annotations' request storage static class access to the `HttpContextAccessor`, so that it can get the `HttpContext`, which is used to store the per-context cache. You should also add the following to `ConfigureServices()`:
 
 ```csharp
     services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 ```
 
-This is necessary because the cacheing classes from Expressive Annotations - ProcessStorage and RequestStorage - have not yet been rewritten using .NET Core's MemoryCache service. It is intended that this should be done at some point, in which case the startup configuration above will no longer be required, although startup.cs will then need to provide the dependency injection and lifetime management for the rewritten cache services.
+This is necessary because the cacheing classes from Expressive Annotations - `ProcessStorage` and `RequestStorage` - have not yet been rewritten using .NET Core's `MemoryCache` service. It is intended that this should be done at some point, in which case the startup configuration above will no longer be required, although `startup.cs` will then need to provide the dependency injection and lifetime management for the rewritten cache services.
 
 ### Brief Examples of usage
 The [brief introductory examples](#what-are-a-brief-examples-of-usage) of how Expressive Annotations can be used, from Jarosław's original documentation, are still valid in UoN.ExpressiveAnnotations.NetCore. Models which use Expressive Annotations attributes will need:
@@ -170,11 +97,11 @@ using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
 When using Jarosław's .NET Framework version of Expressive Annotations in a .NET Core application, server-side validation still works, but client-side validation doesn't. 
 
-In .NET Framework, [Custom Attributes](https://msdn.microsoft.com/en-us/library/cc668224.aspx) are implemented by defining a custom attribute class that inherits from ValidationAttribute (which implements server-side validation), and validation rules are passed to the client by hooking up a validator which inherits from [DataAnnotationsModelValidator](https://docs.microsoft.com/en-us/dotnet/api/system.web.modelbinding.dataannotationsmodelvalidator-1?view=netframework-4.7.2). 
+In .NET Framework, [Custom Attributes](https://msdn.microsoft.com/en-us/library/cc668224.aspx) are implemented by defining a custom attribute class that inherits from `ValidationAttribute` (which implements server-side validation), and validation rules are passed to the client by hooking up a validator which inherits from [DataAnnotationsModelValidator](https://docs.microsoft.com/en-us/dotnet/api/system.web.modelbinding.dataannotationsmodelvalidator-1?view=netframework-4.7.2). 
 
-In .NET Core this has been simplified a little: ValidationAttribute still works the same way (hence server-side validation still works) but to support client-side validation the custom attribute class should implement [IClientModelValidator](https://docs.microsoft.com/en-us/aspnet/core/mvc/models/validation?view=aspnetcore-2.1#iclientmodelvalidator), adding data attributes to the ClientModelValidationContext in the implementation of AddValidation(). 
+In .NET Core this has been simplified a little: `ValidationAttribute` still works the same way (hence server-side validation still works) but to support client-side validation the custom attribute class should implement [IClientModelValidator](https://docs.microsoft.com/en-us/aspnet/core/mvc/models/validation?view=aspnetcore-2.1#iclientmodelvalidator), adding data attributes to the `ClientModelValidationContext` in the implementation of `AddValidation()`. 
 
-This is essentially the change implemented in this .NET Core Version of ExpressiveAnnotations. Although this means that a separate Validator class is no longer required, this implementation preserves the separation of the Validator classes from the Attribute classes, with the Attribute classes instantiating Validators and calling AttachValidationRules() on those Validators to add the data attributes to the context. A separate project for unobtrusive (client-side) validation is no longer necessary though, so the helper classes and methods from that project have been merged into the UoN.ExpressiveAnnotations.NetCore project.
+This is essentially the change implemented in this .NET Core Version of ExpressiveAnnotations. Although this means that separate Validator classes are no longer required, this implementation preserves the separation of the Validator classes from the Attribute classes, with the Attribute classes instantiating Validators and calling `AttachValidationRules()` on those Validators to add the data attributes to the context. A separate project for unobtrusive (client-side) validation is no longer necessary though, so the helper classes and methods from that project have been merged into the UoN.ExpressiveAnnotations.NetCore project.
 
 In addition, the solution contains a partial re-implementation in .NET Core of Jarosław's sample project. The .NET Core sample is incomplete and has only been partially reworked to follow .NET Core best practices. Not all of the controls work - the datepicker has not been implemented in the sample, for example - and the sample does produce some errors in the web developer console. But fundamentally the sample does demonstrate how Expressive Annotations can be hooked up - with functioning client-side validation - in a .NET Core 2.1 application, which is somewhat different from the way that Expressive Annotations is hooked up in a .NET Framework application.
 
@@ -182,7 +109,7 @@ The UoN.ExpressiveAnnotations.NetCore solution has also been simplified by remov
 
 ## Unimplemented functionality
 
-Note that the ValueParserAttribute has not yet been implemented in UoN.ExpressiveAnnotations.NetCore.
+Note that the `ValueParserAttribute` has not yet been implemented in UoN.ExpressiveAnnotations.NetCore.
 
 ToolChain functions and custom-defined functions have not been tested and may not work.
 
@@ -679,7 +606,7 @@ Note that neither the server-side parser nor the client-side validation mechanis
 
 ##### <a id="traps">Traps (discrepancies between server- and client-side expressions evaluation)</a>
 
-Because client-side handles expressions in its unchanged form (as provided to attribute), attention is needed when dealing with `null` keyword - there are discrepancies between EA parser (mostly follows csharp rules) and JavaScript, e.g.
+Because client-side handles expressions in its unchanged form (as provided to attribute), attention is needed when dealing with `null` keyword - there are discrepancies between EA parser (mostly follows C# rules) and JavaScript, e.g.
 
 * `null + "text"` - in C# `"text"`, in JS `"nulltext"`,
 * `2 * null`      - in C# `null`  , in JS `0`,
@@ -777,7 +704,7 @@ Many signatures can be defined for a single function name. Types are not taken u
 
 ##### <a id="can-I-have-custom-utility-like-functions-outside-of-my-models">Can I have custom utility-like functions outside of my models?</a>
 
-(Note that the following may not work in the same way in .NET Core)
+(Note that the following does not work in the same way in .NET Core; it might be quite easy to get this working, but some investigation will be required)
 
 Sure, provide your own methods provider, or extend existing global one, i.e.
 
@@ -913,8 +840,7 @@ In implementing UoN.ExpressiveAnnotations.NetCore, we found it preferable that, 
 In order to obtain the behaviour we desire, when the form is submitted we add ALL inputs to jquery-validation's validator.submitted array, which is how it keeps track of fields that have previously failed validation.
 
 ```Javascript
-import $ from "jquery";
-
+<script>
 $(".js--myformsubmitbutton").click(e => {
   const form = e.target.closest("form");
   const validator = $(form).validate();
@@ -923,6 +849,7 @@ $(".js--myformsubmitbutton").click(e => {
     validator.submitted[$(this).attr("name")] = "Invalid";
   });
 });
+</script>
 ```
 
 ##### <a id="can-i-increase-web-console-verbosity-for-debug-purposes">Can I increase web console verbosity for debug purposes?</a>
