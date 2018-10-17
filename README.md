@@ -1,7 +1,7 @@
 ﻿# UoN.ExpressiveAnnotations.NetCore
 
 [![License](https://img.shields.io/badge/licence-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.org/uon-nuget/UoN.ExpressiveAnnotations.NetCore.svg?branch=develop)](https://travis-ci.org/UniversityOfNottingham/UoN.ExpressiveAnnotations.NetCore)
+[![Build Status](https://travis-ci.org/uon-nuget/UoN.ExpressiveAnnotations.NetCore.svg?branch=master)](https://travis-ci.org/UniversityOfNottingham/UoN.ExpressiveAnnotations.NetCore)
 
 ## What is it?
 
