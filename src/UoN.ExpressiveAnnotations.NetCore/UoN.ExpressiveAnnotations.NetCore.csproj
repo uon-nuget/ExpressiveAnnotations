@@ -2,6 +2,28 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageVersion>0.1.0</PackageVersion>
+
+    <Authors>UoN Application Development</Authors>
+
+    <Description>
+Fork of Jarosław Waliszko's Expressive Annotations .NET library, adding support for .NET Core. Expressive Annotations provides new flexible and powerful model validation attributes, to add to the attributes built in to .NET.
+    </Description>
+
+    <PackageReleaseNotes>
+This release supports client-side validation in .NET Core, using RequiredIf and AssertThat attributes. ValueParser has not been implemented. ToolChain functions and custom-defined functions have not been tested and may not work. 
+    </PackageReleaseNotes>
+
+    <Copyright>Copyright 2018 (c) University of Nottingham.</Copyright>
+
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageIconUrl>https://raw.githubusercontent.com/uon-nuget/assets/master/nuget-package-icon.png</PackageIconUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/uon-nuget/UoN.ExpressiveAnnotations.NetCore/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/uon-nuget/UoN.ExpressiveAnnotations.NetCore</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/uon-nuget/UoN.ExpressiveAnnotations.NetCore</RepositoryUrl>
+
+    <PackageTags>UoN Validation Unobtrusive DataAnnotations Annotations</PackageTags>
+
   </PropertyGroup>
 
   <ItemGroup>
