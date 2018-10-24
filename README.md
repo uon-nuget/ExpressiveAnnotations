@@ -110,8 +110,6 @@ The `UoN.ExpressiveAnnotations.NetCore` solution has also been simplified by rem
 
 ## Unimplemented functionality
 
-Note that the `ValueParserAttribute` has not yet been implemented in `UoN.ExpressiveAnnotations.NetCore`.
-
 ToolChain functions and custom-defined functions have not been tested and may not work.
 
 
@@ -738,8 +736,6 @@ Sure, provide your own methods provider, or extend existing global one, i.e.
 
 ##### <a id="how-to-cope-with-values-of-custom-types">How to cope with values of custom types?</a>
 
-Note that ValueParser has not yet been implemented in `UoN.ExpressiveAnnotations.NetCore`, so the following doesn't work in .Net Core at present.
-
 If you need to handle value string extracted from DOM field in any non built-in way, you can redefine given type-detection logic. The default mechanism recognizes and handles automatically types identified as: `timespan`, `datetime`, `enumeration`, `number`, `string`, `bool` and `guid`. If non of them is matched for a particular field, JSON deserialization is invoked. You can provide your own deserializers though. The process is as follows:
 
 * at server-side decorate your property with special attribute which gives a hint to client-side, which parser should be chosen for corresponding DOM field value deserialization:
@@ -774,8 +770,6 @@ Finally, there is a possibility to override built-in conversion globally. In thi
 If you redefine default mechanism, you can still have the `ValueParser` annotation on any fields you consider exceptional - annotation gives the highest parsing priority.
 
 ##### <a id="how-to-cope-with-dates-given-in-non-standard-formats">How to cope with dates given in non-standard formats?</a>
-
-Note that `ValueParser` has not yet been implemented in `UoN.ExpressiveAnnotations.NetCore`, so the following doesn't work in .Net Core at present.
 
 When values of DOM elements are extracted, they are converted to appropriate types. For fields containing date strings, JavaScript `Date.parse()` method is used by default. As noted in [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse), the input parameter is:
 
