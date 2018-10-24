@@ -250,17 +250,6 @@
                 $(this).parent().find('.code').toggle('slow');
             });
 
-            $.datepicker.setDefaults({
-                changeMonth: true,
-                changeYear: true
-            });
-
-            $('.date').datepicker($.datepicker.regional['@lang']).on('change', function() {
-                if (typeof $('form').valid === 'function') { // safety check if our demo project is not set to server side validation only (no jquery.validate.js loaded)
-                    $(this).valid(); // triggers the validation test on change (to avoid second click)
-                }
-            });
-
             $('input[type="checkbox"], input[type="radio"]').on('change', function() {
                 if (typeof $('form').valid === 'function') {
                     $(this).valid(); // triggers the validation test on change (jquery.validate.js does not trigger checkbox and radio validation on click, if such a click occurs prior to first submission attempt of entire form - later, validation is triggered
@@ -272,22 +261,5 @@
             });
         });
 
-        $.datepicker.regional['pl'] = { // https://github.com/jquery/jquery-ui/tree/master/ui/i18n
-            closeText: 'Zamknij',
-            prevText: '&#x3C;Poprzedni',
-            nextText: 'Następny&#x3E;',
-            currentText: 'Dziś',
-            monthNames: ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'],
-            monthNamesShort: ['Sty', 'Lu', 'Mar', 'Kw', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrz', 'Pa', 'Lis', 'Gru'],
-            dayNames: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'],
-            dayNamesShort: ['Nie', 'Pn', 'Wt', 'Śr', 'Czw', 'Pt', 'So'],
-            dayNamesMin: ['N', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So'],
-            weekHeader: 'Tydz',
-            dateFormat: 'yy-mm-dd',
-            firstDay: 1,
-            isRTL: false,
-            showMonthAfterYear: false,
-            yearSuffix: ''
-        };
     </script>
 }
