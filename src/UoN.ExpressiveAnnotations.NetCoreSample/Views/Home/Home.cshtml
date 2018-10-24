@@ -5,7 +5,8 @@
 
 @{
     var lang = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
-    var client = "client".Equals(ViewBag.Validation);
+    //var client = "client".Equals(ViewBag.Validation);
+    var client = true;
     var indication = ViewBag.Indication;
     var triggers = ViewBag.Triggers;
     var verbose = ViewBag.Verbose;

@@ -11,7 +11,7 @@ Fork of Jarosław Waliszko's Expressive Annotations .NET library, adding support
     </Description>
 
     <PackageReleaseNotes>
-This release supports client-side validation in .NET Core, using RequiredIf and AssertThat attributes. ValueParser has not been implemented. ToolChain functions and custom-defined functions have not been tested and may not work. 
+This release supports client-side validation in .NET Core, using RequiredIf and AssertThat attributes. ToolChain functions and custom-defined functions have not been tested and may not work. 
     </PackageReleaseNotes>
 
     <Copyright>Copyright 2018 (c) University of Nottingham.</Copyright>
