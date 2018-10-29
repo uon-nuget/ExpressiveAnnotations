@@ -1,0 +1,10 @@
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@{
+    var clientLabel = "client".Equals(ViewBag.Validation) ? "[client]" : "client";
+    var serverLabel = "server".Equals(ViewBag.Validation) ? "[server]" : "server";
+}
+<div>
+    disable or enable client-side validation:
+    <a href="@Url.Action("SetValidation", "System", new {type = "client", returnUrl = Context.Request.GetEncodedUrl() }, null)">@clientLabel</a>
+    <a href="@Url.Action("SetValidation", "System", new {type = "server", returnUrl = Context.Request.GetEncodedUrl() }, null)">@serverLabel</a>
+</div>

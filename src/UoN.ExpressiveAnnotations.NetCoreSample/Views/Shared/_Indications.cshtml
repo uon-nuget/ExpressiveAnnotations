@@ -1,0 +1,14 @@
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@if ("client".Equals(ViewBag.Validation))
+{
+    var asterisksLabel = "asterisks".Equals(ViewBag.Indication) ? "[asterisks]" : "asterisks";
+    var asterisksWithHidingLabel = "asterisks-with-hiding".Equals(ViewBag.Indication) ? "[asterisks-with-hiding]" : "asterisks-with-hiding";
+    var noAnnotatingLabel = "no-annotating".Equals(ViewBag.Indication) ? "[no-annotating]" : "no-annotating";
+     
+    <div>
+        annotate required fields using:
+        <a href="@Url.Action("SetIndication", "System", new {value = "asterisks", returnUrl = Context.Request.GetEncodedUrl() }, null)">@asterisksLabel</a>
+        <a href="@Url.Action("SetIndication", "System", new {value = "asterisks-with-hiding", returnUrl = Context.Request.GetEncodedUrl() }, null)">@asterisksWithHidingLabel</a>
+        <a href="@Url.Action("SetIndication", "System", new {value = "no-annotating", returnUrl = Context.Request.GetEncodedUrl() }, null)">@noAnnotatingLabel</a>
+    </div>
+}
