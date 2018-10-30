@@ -130,7 +130,7 @@
         <pre class="action">[show attribute]</pre>
         <div>
             @Html.LabelFor(model => model.PoliticalStability, new { @class = "inline prefix" })
-            @*@Html.EnumDropDownListFor(model => model.PoliticalStability, true)*@
+            @Html.DropDownListFor(model => model.PoliticalStability, Html.GetEnumSelectList<Stability>())
             @Html.ValidationMessageFor(model => model.PoliticalStability)
         </div>
     </li>
