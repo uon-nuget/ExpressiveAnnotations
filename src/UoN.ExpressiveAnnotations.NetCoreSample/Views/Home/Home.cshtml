@@ -35,10 +35,10 @@
     <fieldset>
         <legend>Usage sample for model validation in .NET Core MVC</legend>
         <div id="panel" class="box-small">
-            @Html.PartialAsync("_Culture")
-            @Html.PartialAsync("_Validation")
-            @Html.PartialAsync("_Indications")
-            @Html.PartialAsync("_EAOptions")
+            @Html.Partial("_Culture")
+            @Html.Partial("_Validation")
+            @Html.Partial("_Indications")
+            @Html.Partial("_EAOptions")
         </div>
         @Html.EditorFor(model => model)
         <input type="submit" value="Submit" />
