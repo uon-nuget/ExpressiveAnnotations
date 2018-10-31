@@ -12,7 +12,7 @@ using UoN.ExpressiveAnnotations.NetCoreSample.Models;
 
 namespace UoN.ExpressiveAnnotations.NetCoreSample.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
