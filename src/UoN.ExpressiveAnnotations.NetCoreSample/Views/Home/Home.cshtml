@@ -47,8 +47,7 @@
 @section Scripts {
     @if (client)
     {
-        @*@Scripts.Render("~/bundles/jqueryval")
-        @Scripts.Render("~/bundles/expressive") // load expressive.annotations.validate.js*@
+        <partial name="_ValidationScriptsPartial" />
 
         <script>
             // var expann = ea.noConflict(); // in case of naming collision, return control of the ea variable back to its origins (old references of ea are saved during ExpressiveAnnotations initialization; noConflict() restores them)
