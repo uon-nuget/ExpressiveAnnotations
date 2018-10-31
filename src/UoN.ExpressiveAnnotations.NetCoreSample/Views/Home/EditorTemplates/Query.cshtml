@@ -227,6 +227,15 @@
             @Html.LabelFor(model => model.SelectedDonations, new { @class = "inline prefix" })
             @*@Html.CheckBoxListFor(model => model.SelectedDonations, model => model.AvailableDonations, item => item, item => item, model => model.SelectedDonations, Position.Horizontal, model => new { @class = "cboxlist inline" })*@
             &nbsp;
+            @*<ul>
+                @foreach (var donation in Model.AvailableDonations)
+                {
+                    <li>
+                        <input type="checkbox" id="@Model.AvailableDonations."/>
+                    </li>
+                }
+            </ul>*@
+
             @Html.CheckBoxFor(model => model.SelectedCurrencies[0]) <span class="cbox inline">Bitcoin</span>
             @Html.CheckBoxFor(model => model.SelectedCurrencies[1]) <span class="cbox inline">Ethereum</span>
             @Html.ValidationMessageFor(model => model.SelectedDonations)

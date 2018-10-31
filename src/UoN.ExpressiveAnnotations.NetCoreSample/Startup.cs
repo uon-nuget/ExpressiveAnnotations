@@ -22,6 +22,8 @@ namespace UoN.ExpressiveAnnotations.NetCoreSample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddDistributedMemoryCache();
+            services.AddSession();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
@@ -40,6 +42,8 @@ namespace UoN.ExpressiveAnnotations.NetCoreSample
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseSession();
 
             app.UseMvc(routes =>
             {
