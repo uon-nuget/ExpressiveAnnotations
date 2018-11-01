@@ -1,7 +1,6 @@
 ﻿@using System.Threading
 @using UoN.ExpressiveAnnotations.NetCoreSample
 @using UoN.ExpressiveAnnotations.NetCoreSample.Models
-@*@using MvcCheckBoxList.Model*@
 @model UoN.ExpressiveAnnotations.NetCoreSample.Models.Query
 
 @{ var lang = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName; }
@@ -211,8 +210,8 @@
             @Html.ValidationMessageFor(model => model.FlightId)
         </div>
     </li>
-    <li>
-        <pre class="code">
+<li>
+    <pre class="code">
 [RequiredIf("GoAbroad == true")]
 [AssertThat("GoAbroad
                  ? IntArrayLength(SelectedDonations) > 2
@@ -222,27 +221,19 @@
                  : true", Priority = 2")]
 [ValueParser("ArrayParser")]
 </pre>
-        <pre class="action">[show attribute]</pre>
-        <div>
-            @Html.LabelFor(model => model.SelectedDonations, new { @class = "inline prefix" })
-            @*@Html.CheckBoxListFor(model => model.SelectedDonations, model => model.AvailableDonations, item => item, item => item, model => model.SelectedDonations, Position.Horizontal, model => new { @class = "cboxlist inline" })*@
-            &nbsp;
-            @*<ul>
-                @foreach (var donation in Model.AvailableDonations)
-                {
-                    <li>
-                        <input type="checkbox" id="@Model.AvailableDonations."/>
-                    </li>
-                }
-            </ul>*@
-
-            @Html.CheckBoxFor(model => model.SelectedCurrencies[0]) <span class="cbox inline">Bitcoin</span>
-            @Html.CheckBoxFor(model => model.SelectedCurrencies[1]) <span class="cbox inline">Ethereum</span>
-            @Html.ValidationMessageFor(model => model.SelectedDonations)
-        </div>
-    </li>
-    <li>
-        <pre class="code">
+    <pre class="action">[show attribute]</pre>
+<div>
+    @Html.LabelFor(model => model.SelectedDonations, new { @class = "inline prefix" })
+    @Html.ListBoxFor(model => model.SelectedDonations, new SelectList(Model.AvailableDonations, null), string.Empty)
+</div>
+    <div>
+        @Html.LabelFor(model => model.SelectedCurrencies, new { @class = "inline prefix" })
+        @Html.CheckBoxFor(model => model.SelectedCurrencies[0]) <span class="cbox inline">Bitcoin</span>
+        @Html.CheckBoxFor(model => model.SelectedCurrencies[1]) <span class="cbox inline">Ethereum</span>
+        @Html.ValidationMessageFor(model => model.SelectedDonations)
+    </div>
+<li>
+    <pre class="code">
 [CustomRequiredIf("GoAbroad == true")]
 [CustomAssertThat("Length(コメント) > 1e1 - 1", Priority = 2)]
 [CustomAssertThat("Length(コメント) > 1e1 - 6", Priority = 1)]
