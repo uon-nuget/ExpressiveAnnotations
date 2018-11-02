@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using Microsoft.AspNetCore.Http;
 
 namespace UoN.ExpressiveAnnotations.NetCoreSample.Misc
