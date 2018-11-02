@@ -4,7 +4,8 @@ using UoN.ExpressiveAnnotations.NetCoreSample.Models;
 
 namespace UoN.ExpressiveAnnotations.NetCoreSample.Controllers
 {
-    [Route("api/Default")]
+    [Route("api/[controller]")]
+    [ApiController]
     public class DefaultController : ControllerBase
     {
         // POST api/Default/Save

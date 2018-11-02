@@ -29,7 +29,15 @@ namespace UoN.ExpressiveAnnotations.NetCoreSample.Controllers
 
             HttpContext.Session.SetInt32("Postbacks", (int?)TempData["Postbacks"] ?? 0);
             ViewBag.Success = TempData["Success"];
-            return View("Home", TempData["Query"] as Query ?? model);
+
+            try
+            {
+                return View("Home", JsonConvert.DeserializeObject<Query>((string) TempData["Query"]));
+            }
+            catch
+            {
+                return View("Home", model);
+            }
         }
 
         [HttpPost]
@@ -45,7 +53,11 @@ namespace UoN.ExpressiveAnnotations.NetCoreSample.Controllers
 
                 TempData["Postbacks"] = HttpContext.Session.GetInt32("Postbacks");
                 TempData["Success"] = "[query successfully submitted]";
-                TempData["Query"] = model;
+                TempData["Query"] = JsonConvert.SerializeObject(model, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+
                 return RedirectToAction("Index"); // PRG to avoid subsequent form submission attempts on page refresh (http://en.wikipedia.org/wiki/Post/Redirect/Get)
             }
 
@@ -62,7 +74,7 @@ namespace UoN.ExpressiveAnnotations.NetCoreSample.Controllers
                 {
                     SerializerSettings = { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }
                 };
-                return await client.PostAsync("api/Default/Save", model, formatter);
+                return await client.PostAsync("api/Default", model, formatter);
             }
         }
 
