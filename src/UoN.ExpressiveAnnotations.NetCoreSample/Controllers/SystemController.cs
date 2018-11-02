@@ -24,14 +24,14 @@ namespace UoN.ExpressiveAnnotations.NetCoreSample.Controllers
         }
 
         [HttpPost]
-        public JsonResult SetTriggers(string events)
+        public JsonResult SetTriggers([FromBody] string events)
         {
             TriggersManager.Instance.Save(events, HttpContext);
             return Json(new {success = true});
         }
 
         [HttpPost]
-        public JsonResult SetVerbosity(bool value)
+        public JsonResult SetVerbosity([FromBody] bool value)
         {
             VerbosityManager.Instance.Save(value, HttpContext);
             return Json(new {success = true});

@@ -147,7 +147,7 @@
                         dataType: 'json',
                         contentType: 'application/json; charset=utf-8',
                         url: '/System/SetTriggers',
-                        data: JSON.stringify({ events: triggers }),
+                        data: JSON.stringify(triggers),
                         success: function(result) {
                             if (result.success) {
                                 ea.settings.apply({ dependencyTriggers: triggers });
@@ -164,7 +164,7 @@
                         dataType: 'json',
                         contentType: 'application/json; charset=utf-8',
                         url: '/System/SetVerbosity',
-                        data: JSON.stringify({ value: verbose }),
+                        data: JSON.stringify(verbose),
                         success: function(result) {
                             if (result.success) {
                                 ea.settings.apply({ debug: verbose });
