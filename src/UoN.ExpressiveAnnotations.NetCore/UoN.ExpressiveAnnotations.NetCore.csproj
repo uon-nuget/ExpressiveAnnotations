@@ -2,16 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageVersion>0.1.0</PackageVersion>
+    <PackageVersion>0.1.1-beta1</PackageVersion>
 
     <Authors>UoN Application Development</Authors>
 
     <Description>
-Fork of Jarosław Waliszko's Expressive Annotations .NET library, adding support for .NET Core. Expressive Annotations provides new flexible and powerful model validation attributes, to add to the attributes built in to .NET.
+Fork of Jarosław Waliszko's Expressive Annotations .NET library, adding support for client-side validation in .NET Core. Expressive Annotations provides new flexible and powerful model validation attributes, to add to the attributes built in to .NET.
     </Description>
 
     <PackageReleaseNotes>
-This release supports client-side validation in .NET Core, using RequiredIf and AssertThat attributes. ToolChain functions and custom-defined functions have not been tested and may not work. 
+This release fixes an issue in 0.1.0 where client-side validation only functioned for one annotation of the same type per property.
     </PackageReleaseNotes>
 
     <Copyright>Copyright 2018 (c) University of Nottingham.</Copyright>
