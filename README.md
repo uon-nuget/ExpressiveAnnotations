@@ -6,7 +6,7 @@
 
 ## What is it?
 
-A small .NET library forked from Jarosław Waliszko's [Expressive Annotations](https://github.com/jwaliszko/ExpressiveAnnotations) to add support for .NET Core. Expressive Annotations provides new flexible and powerful model validation attributes, to add to the attributes built in to .NET.
+A small .NET library forked from Jarosław Waliszko's [Expressive Annotations](https://github.com/jwaliszko/ExpressiveAnnotations) to add support for client-side validation in .NET Core projects. Expressive Annotations provides new flexible and powerful model validation attributes, to add to the attributes built in to .NET.
 
 ## What does it do?
 
@@ -21,7 +21,7 @@ Conditions are specified as expressions within the attributes, using Expressive 
 
 The library targets `netstandard2.0` and depends upon ASP.Net Core 2.1 MVC and Newtonsoft JSON 11.0.2.
 
-To use client-side validation you'll also need to include Jarosław's `expressive.annotations.validate.js`, which depends on `jquery.js`, `jquery.validate.js` and `jquery.validate.unobtrusive.js`.
+To use client-side validation you'll also need to include Jarosław's `expressive.annotations.validate.js`, which depends on `jquery.js` (note that jQuery must be made globally available), `jquery.validate.js` and `jquery.validate.unobtrusive.js`.
 
 ## <span id="usage">Usage</span>
 
@@ -107,10 +107,6 @@ This is essentially the change implemented in this .NET Core Version of Expressi
 In addition, the solution contains a partial re-implementation in .NET Core of Jarosław's sample project. The .NET Core sample is incomplete and has only been partially reworked to follow .NET Core best practices. Not all of the controls work - the datepicker has not been implemented in the sample, for example - and the sample does produce some errors in the web developer console. But fundamentally the sample does demonstrate how Expressive Annotations can be hooked up - with functioning client-side validation - in a .NET Core 2.1 application, which is somewhat different from the way that Expressive Annotations is hooked up in a .NET Framework application.
 
 The `UoN.ExpressiveAnnotations.NetCore` solution has also been simplified by removing the supporting projects; separate samples for MvcWeb and MvvmDesktop applications are no longer relevant; and the test projects have been removed because tests have not yet been re-implemented in this solution.
-
-## Unimplemented functionality
-
-ToolChain functions and custom-defined functions have not been tested and may not work.
 
 
 ## Contributing
@@ -703,15 +699,15 @@ Many signatures can be defined for a single function name. Types are not taken u
 
 ##### <a id="can-I-have-custom-utility-like-functions-outside-of-my-models">Can I have custom utility-like functions outside of my models?</a>
 
-(Note that the following does not work in the same way in .NET Core; it might be quite easy to get this working, but some investigation will be required)
-
-Sure, provide your own methods provider, or extend existing global one, i.e.
+Sure: in startup.cs, provide your own methods provider, or extend existing global one, i.e.
 
 * extend existing provider:
 
  ```csharp
-    protected void Application_Start()
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
+        ...
+
         Toolchain.Instance.AddFunction<int[], int>("ArrayLength", array => array.Length);
 ```
 
@@ -729,8 +725,10 @@ Sure, provide your own methods provider, or extend existing global one, i.e.
         }
     }
 
-    protected void Application_Start()
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
+        ...
+
         Toolchain.Instance.Recharge(new CustomFunctionsProvider());
 ```
 
