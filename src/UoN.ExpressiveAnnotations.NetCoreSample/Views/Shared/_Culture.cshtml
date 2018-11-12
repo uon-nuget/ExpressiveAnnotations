@@ -1,0 +1,12 @@
+﻿@using System.Threading
+@using Microsoft.AspNetCore.Http.Extensions
+
+@{
+    var plLabel = "pl".Equals(Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName) ? "[polski]" : "polski";
+    var enLabel = "en".Equals(Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName) ? "[english]" : "english";
+}
+<div>
+    change language to test localized information:
+    <a href="@Url.Action("SetCulture", "System", new {lang = "pl", returnUrl = Context.Request.GetEncodedUrl() }, null)">@plLabel</a>
+    <a href="@Url.Action("SetCulture", "System", new {lang = "en", returnUrl = Context.Request.GetEncodedUrl() }, null)">@enLabel</a>
+</div>

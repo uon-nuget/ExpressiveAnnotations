@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -11,7 +12,7 @@ using UoN.ExpressiveAnnotations.NetCoreSample.Models;
 
 namespace UoN.ExpressiveAnnotations.NetCoreSample.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
@@ -26,24 +27,37 @@ namespace UoN.ExpressiveAnnotations.NetCoreSample.Controllers
                 LatestSuggestedReturnDate = DateTime.Today.AddMonths(1)
             };
 
-            //Session["Postbacks"] = (int?)TempData["Postbacks"] ?? 0;
+            HttpContext.Session.SetInt32("Postbacks", (int?)TempData["Postbacks"] ?? 0);
             ViewBag.Success = TempData["Success"];
-            return View("Home", TempData["Query"] as Query ?? model);
+
+            try
+            {
+                return View("Home", JsonConvert.DeserializeObject<Query>((string) TempData["Query"]));
+            }
+            catch
+            {
+                return View("Home", model);
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult> Index(Query model)
         {
-            //Session["Postbacks"] = (int)Session["Postbacks"] + 1;
+            HttpContext.Session.SetInt32("Postbacks", (HttpContext.Session.GetInt32("Postbacks") ?? 0) + 1);
+
             if (ModelState.IsValid)
             {
                 var result = await Save(model);
                 if (!result.IsSuccessStatusCode)
                     throw new ApplicationException("Unexpected failure in WebAPI pipeline.");
 
-                //TempData["Postbacks"] = Session["Postbacks"];
+                TempData["Postbacks"] = HttpContext.Session.GetInt32("Postbacks");
                 TempData["Success"] = "[query successfully submitted]";
-                TempData["Query"] = model;
+                TempData["Query"] = JsonConvert.SerializeObject(model, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+
                 return RedirectToAction("Index"); // PRG to avoid subsequent form submission attempts on page refresh (http://en.wikipedia.org/wiki/Post/Redirect/Get)
             }
 
@@ -60,7 +74,7 @@ namespace UoN.ExpressiveAnnotations.NetCoreSample.Controllers
                 {
                     SerializerSettings = { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }
                 };
-                return await client.PostAsync("api/Default/Save", model, formatter);
+                return await client.PostAsync("api/Default", model, formatter);
             }
         }
 

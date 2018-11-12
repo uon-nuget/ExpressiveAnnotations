@@ -1,12 +1,9 @@
 ﻿@using System.Threading
-@using UoN.ExpressiveAnnotations.NetCoreSample.Models
-@*@using ExpressiveAnnotations.NetCoreSample.Misc*@
 @model UoN.ExpressiveAnnotations.NetCoreSample.Models.Query
 
 @{
     var lang = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
-    //var client = "client".Equals(ViewBag.Validation);
-    var client = true;
+    var client = "client".Equals(ViewBag.Validation);
     var indication = ViewBag.Indication;
     var triggers = ViewBag.Triggers;
     var verbose = ViewBag.Verbose;
@@ -35,10 +32,10 @@
     <fieldset>
         <legend>Usage sample for model validation in .NET Core MVC</legend>
         <div id="panel" class="box-small">
-            @*@Html.Partial("_Culture")
-            @Html.Partial("_Validation")
-            @Html.Partial("_Indications")
-            @Html.Partial("_EAOptions")*@
+            <partial name="_Culture" />
+            <partial name="_Validation" />
+            <partial name="_Indications" />
+            <partial name="_EAOptions" />
         </div>
         @Html.EditorFor(model => model)
         <input type="submit" value="Submit" />
@@ -48,8 +45,7 @@
 @section Scripts {
     @if (client)
     {
-        @*@Scripts.Render("~/bundles/jqueryval")
-        @Scripts.Render("~/bundles/expressive") // load expressive.annotations.validate.js*@
+        <partial name="_ValidationScriptsPartial" />
 
         <script>
             // var expann = ea.noConflict(); // in case of naming collision, return control of the ea variable back to its origins (old references of ea are saved during ExpressiveAnnotations initialization; noConflict() restores them)
@@ -151,7 +147,7 @@
                         dataType: 'json',
                         contentType: 'application/json; charset=utf-8',
                         url: '/System/SetTriggers',
-                        data: JSON.stringify({ events: triggers }),
+                        data: JSON.stringify(triggers),
                         success: function(result) {
                             if (result.success) {
                                 ea.settings.apply({ dependencyTriggers: triggers });
@@ -168,7 +164,7 @@
                         dataType: 'json',
                         contentType: 'application/json; charset=utf-8',
                         url: '/System/SetVerbosity',
-                        data: JSON.stringify({ value: verbose }),
+                        data: JSON.stringify(verbose),
                         success: function(result) {
                             if (result.success) {
                                 ea.settings.apply({ debug: verbose });

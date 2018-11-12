@@ -212,6 +212,7 @@ namespace UoN.ExpressiveAnnotations.NetCoreSample.Models
         [Display(ResourceType = typeof(Resources), Name = nameof(Resources.Donation))]
         public int[] SelectedDonations { get; set; }
 
+        [Display(Name = "Selected Currencies")]
         public List<bool> SelectedCurrencies { get; set; }
 
         [CustomRequiredIf("GoAbroad == true")]
