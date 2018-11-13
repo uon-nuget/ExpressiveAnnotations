@@ -29,6 +29,7 @@ This release fixes an issue in 0.1.0 where client-side validation only functione
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
   </ItemGroup>
