@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using UoN.ExpressiveAnnotations.NetCore.Caching;
 using UoN.ExpressiveAnnotations.NetCoreSample.Misc;
 
 namespace UoN.ExpressiveAnnotations.NetCoreSample
@@ -21,6 +22,7 @@ namespace UoN.ExpressiveAnnotations.NetCoreSample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMemoryCache();
+            services.AddScoped<RequestCache>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDistributedMemoryCache();

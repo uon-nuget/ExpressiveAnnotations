@@ -24,7 +24,8 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
     /// <typeparam name="T">Any type derived from <see cref="ExpressiveAttribute" /> class.</typeparam>
     public abstract class ExpressiveValidator<T> where T : ExpressiveAttribute
     {
-        private IMemoryCache _memoryCache;
+        private readonly IMemoryCache _processCache;
+        private readonly IMemoryCache _requestCache;
 
 
         /// <summary>
@@ -32,11 +33,13 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
         /// </summary>
         /// <param name="metadata">The model metadata.</param>
         /// <param name="attribute">The expressive attribute instance.</param>
-        /// <param name="memoryCache">An IMemoryCache instance.</param>
+        /// <param name="processCache">An IMemoryCache instance, scoped to the process.</param>
+        /// <param name="requestCache">A RequestCache instance, scoped to the request.</param>
         /// <exception cref="System.ComponentModel.DataAnnotations.ValidationException"></exception>
-        protected ExpressiveValidator(ModelMetadata metadata, T attribute, IMemoryCache memoryCache)
+        protected ExpressiveValidator(ModelMetadata metadata, T attribute, IMemoryCache processCache, IMemoryCache requestCache)
         {
-            _memoryCache = memoryCache;
+            _processCache = processCache;
+            _requestCache = requestCache;
 
             try
             {
@@ -236,20 +239,20 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
 
         private string AllocateSuffix()
         {
-            if (!_memoryCache.TryGetValue(AttributeWeakId, out int count))
+            if (!_requestCache.TryGetValue(AttributeWeakId, out int count))
             {
                 count = 0;
             }
 
             count++;
             AssertAttribsQuantityAllowed(count);
-            _memoryCache.Set(AttributeWeakId, count);
+            _requestCache.Set(AttributeWeakId, count);
             return count == 1 ? string.Empty : char.ConvertFromUtf32(95 + count); // single lowercase letter from latin alphabet or an empty string
         }
 
         private void ResetSuffixAllocation()
         {
-            _memoryCache.Remove(AttributeWeakId);
+            _requestCache.Remove(AttributeWeakId);
         }
 
         private void AssertClientSideCompatibility() // verify client-side compatibility of current expression

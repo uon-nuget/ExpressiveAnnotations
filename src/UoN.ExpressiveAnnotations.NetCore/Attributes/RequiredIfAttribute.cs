@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using UoN.ExpressiveAnnotations.NetCore.Caching;
 using UoN.ExpressiveAnnotations.NetCore.Validators;
 
 namespace UoN.ExpressiveAnnotations.NetCore.Attributes
@@ -97,8 +98,9 @@ namespace UoN.ExpressiveAnnotations.NetCore.Attributes
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var cache = context.ActionContext.HttpContext.RequestServices.GetService<IMemoryCache>();
-            var validator = new RequiredIfValidator(context.ModelMetadata, this, cache);
+            var processCache = context.ActionContext.HttpContext.RequestServices.GetService<IMemoryCache>();
+            var requestCache = context.ActionContext.HttpContext.RequestServices.GetService<RequestCache>();
+            var validator = new RequiredIfValidator(context.ModelMetadata, this, processCache, requestCache);
             validator.AttachValidationRules(context, DefaultErrorMessage);
         }
     }
