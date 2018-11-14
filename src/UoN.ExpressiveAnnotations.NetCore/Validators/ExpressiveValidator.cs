@@ -24,7 +24,6 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
     /// <typeparam name="T">Any type derived from <see cref="ExpressiveAttribute" /> class.</typeparam>
     public abstract class ExpressiveValidator<T> where T : ExpressiveAttribute
     {
-        private readonly IMemoryCache _processCache;
         private readonly IMemoryCache _requestCache;
 
 
@@ -38,7 +37,6 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
         /// <exception cref="System.ComponentModel.DataAnnotations.ValidationException"></exception>
         protected ExpressiveValidator(ModelMetadata metadata, T attribute, IMemoryCache processCache, IMemoryCache requestCache)
         {
-            _processCache = processCache;
             _requestCache = requestCache;
 
             try
@@ -50,11 +48,12 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
                 AttributeWeakId = $"{typeof(T).FullName}.{fieldId}".ToLowerInvariant();
                 FieldName = metadata.PropertyName;
 
-                var item = ProcessStorage<string, CacheItem>.GetOrAdd(AttributeFullId, _ => // map cache is based on static dictionary, set-up once for entire application instance
-                {                                                                           // (by design, no reason to recompile once compiled expressions)
+                var item =processCache.GetOrCreate(AttributeFullId, entry =>
+                {
                     Debug.WriteLine($"[cache add] process: {Process.GetCurrentProcess().Id}, thread: {Thread.CurrentThread.ManagedThreadId}");
 
                     IDictionary<string, Expression> fields = null;
+
                     attribute.Compile(metadata.ContainerType, parser =>
                     {
                         fields = parser.GetFields();
@@ -304,8 +303,10 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
         {
             const int max = 27;
             if (count > max)
+            {
                 throw new InvalidOperationException(
                     $"No more than {max} unique attributes of the same type can be applied for a single field or property.");
+            }
         }
     }
 }
