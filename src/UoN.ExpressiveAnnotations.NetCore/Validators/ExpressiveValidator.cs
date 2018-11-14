@@ -250,11 +250,6 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
             return count == 1 ? string.Empty : char.ConvertFromUtf32(95 + count); // single lowercase letter from latin alphabet or an empty string
         }
 
-        private void ResetSuffixAllocation()
-        {
-            _requestCache.Remove(AttributeWeakId);
-        }
-
         private void AssertClientSideCompatibility() // verify client-side compatibility of current expression
         {
             AssertNoNamingCollisionsAtCorrespondingSegments();
