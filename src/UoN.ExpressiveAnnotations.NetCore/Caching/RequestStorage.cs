@@ -3,50 +3,40 @@
  * Modified work Copyright (c) 2018 The University of Nottingham
  * Licensed MIT: http://opensource.org/licenses/MIT */
 
-using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace UoN.ExpressiveAnnotations.NetCore.Caching
 {
     /// <summary>
     ///     Persists arbitrary key-value pairs for the lifespan of the current HTTP request.
     /// </summary>
-    public static class RequestStorage
+    public class RequestStorage
     {
-        private static IHttpContextAccessor _accessor;
-        public static void Configure(IHttpContextAccessor httpContextAccessor)
+        private readonly IMemoryCache _cache;
+
+        public RequestStorage(IMemoryCache memoryCache)
         {
-            _accessor = httpContextAccessor;
+            _cache = memoryCache;
         }
 
-        public static HttpContext HttpContext => _accessor.HttpContext;
-
-        private static IDictionary<object, object> Items
+        public T Get<T>(string key)
         {
-            get
+            if (!_cache.TryGetValue(key, out T value))
             {
-                if (HttpContext == null)
-                    throw new ApplicationException("HttpContext not available.");
-                return HttpContext.Items; // location that could be used throughtout the entire HTTP request lifetime
-            }                                             // (contrary to a session, this one exists only within the period of a single request).
+                value = default(T);
+            }
+
+            return value;
         }
 
-        public static T Get<T>(string key)
+        public void Set<T>(string key, T value)
         {
-            return Items[key] == null
-                ? default(T)
-                : (T) Items[key];
+            _cache.Set(key, value);
         }
 
-        public static void Set<T>(string key, T value)
+        public void Remove(string key)
         {
-            Items[key] = value;
-        }
-
-        public static void Remove(string key)
-        {
-            Items.Remove(key);
+            _cache.Remove(key);
         }
     }
 }
