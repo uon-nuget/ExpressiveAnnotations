@@ -47,9 +47,11 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
                 AttributeWeakId = $"{typeof(T).FullName}.{fieldId}".ToLowerInvariant();
                 FieldName = metadata.PropertyName;
 
-                var item =processCache.GetOrCreate(AttributeFullId, entry =>
+                var item = processCache.GetOrCreate(AttributeFullId, entry =>
                 {
                     Debug.WriteLine($"[cache add] process: {Process.GetCurrentProcess().Id}, thread: {Thread.CurrentThread.ManagedThreadId}");
+
+                    entry.SetPriority(CacheItemPriority.NeverRemove);
 
                     IDictionary<string, Expression> fields = null;
 
