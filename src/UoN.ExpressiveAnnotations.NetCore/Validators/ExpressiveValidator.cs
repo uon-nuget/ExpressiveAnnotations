@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.Caching.Memory;
 using UoN.ExpressiveAnnotations.NetCore.Attributes;
+using UoN.ExpressiveAnnotations.NetCore.Caching;
 
 namespace UoN.ExpressiveAnnotations.NetCore.Validators
 {
@@ -83,7 +84,7 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
                             ParsersMap.Add(new KeyValuePair<string, string>(metadata.PropertyName, valueParser.ParserName));
                     }
 
-                    return new CacheItem
+                    return new ProcessCacheItem
                     {
                         FieldsMap = FieldsMap,
                         ConstsMap = ConstsMap,
@@ -310,14 +311,4 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
             }
         }
     }
-
-    internal class CacheItem
-    {
-        public IDictionary<string, string> FieldsMap { get; set; }
-        public IDictionary<string, object> ConstsMap { get; set; }
-        public IDictionary<string, object> EnumsMap { get; set; }
-        public IEnumerable<string> MethodsList { get; set; }
-        public IDictionary<string, string> ParsersMap { get; set; }
-    }
-
 }
