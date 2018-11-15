@@ -74,8 +74,12 @@ namespace UoN.ExpressiveAnnotations.NetCore.Attributes
                 throw new ArgumentNullException(nameof(context));
             }
 
+            // Use the HttpContext to inject the MemoryCache into the validator, since we can't inject it in the constructor of 
+            // ValidationAttribute...see https://andrewlock.net/injecting-services-into-validationattributes-in-asp-net-core/
+
             var processCache = context.ActionContext.HttpContext.RequestServices.GetService<IMemoryCache>();
             var requestCache = context.ActionContext.HttpContext.RequestServices.GetService<RequestCache>();
+
             var validator = new AssertThatValidator(context.ModelMetadata, this, processCache, requestCache);
             validator.AttachValidationRules(context, DefaultErrorMessage);
         }

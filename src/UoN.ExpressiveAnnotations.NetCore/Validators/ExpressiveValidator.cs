@@ -48,6 +48,22 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
                 AttributeWeakId = $"{typeof(T).FullName}.{fieldId}".ToLowerInvariant();
                 FieldName = metadata.PropertyName;
 
+                // Parsing the attributes and constructing the maps can be quite expensive. They only need to be parsed once for the
+                // application, so the results of this parsing are stored in a cache scoped to the process.
+                //
+                // Note that, unlike the implementation in the original Expressive Annotations (which used Lazy<T> and a ConcurrentDictionary),
+                // this use of IMemoryCache for caching the data about parsed attributes doesn't guarantee that the cache entries will only
+                // be added once. If a second concurrent request triggers parsing of a set of attributes before the first request has completed,
+                // one of them will end up overwriting the cache entries of the other, so parsing will happen twice. (Or more times, if there
+                // are multiple requests). But once one cache entry has been added, subsequent requests for the same attribute will get the
+                // parsing results from the cache.
+                //
+                // Unless the attributes are extremely numerous, complex and slow to parse, causing performance problems the first time the
+                // application is used after starting, this shouldn't really be a problem.
+                // 
+                // Good discussion about similar issues here:
+                // https://www.hanselman.com/blog/EyesWideOpenCorrectCachingIsAlwaysHard.aspx
+
                 var item = processCache.GetOrCreate(AttributeFullId, entry =>
                 {
                     Debug.WriteLine($"[cache add] process: {Process.GetCurrentProcess().Id}, thread: {Thread.CurrentThread.ManagedThreadId}");
