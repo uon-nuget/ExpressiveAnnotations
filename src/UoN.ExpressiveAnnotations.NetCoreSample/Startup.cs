@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UoN.ExpressiveAnnotations.NetCore.Caching;
+using UoN.ExpressiveAnnotations.NetCore.DependencyInjection;
 using UoN.ExpressiveAnnotations.NetCoreSample.Misc;
 
 namespace UoN.ExpressiveAnnotations.NetCoreSample
@@ -21,13 +22,10 @@ namespace UoN.ExpressiveAnnotations.NetCoreSample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMemoryCache();
-            services.AddScoped<RequestCache>();
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddExpressiveAnnotations();
             services.AddDistributedMemoryCache();
             services.AddSession();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,7 +43,6 @@ namespace UoN.ExpressiveAnnotations.NetCoreSample
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseSession();
 
             app.UseMvc(routes =>
