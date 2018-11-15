@@ -5,7 +5,9 @@
 
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.Extensions.Caching.Memory;
 using UoN.ExpressiveAnnotations.NetCore.Attributes;
+using UoN.ExpressiveAnnotations.NetCore.Caching;
 
 namespace UoN.ExpressiveAnnotations.NetCore.Validators
 {
@@ -19,9 +21,11 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
         /// </summary>
         /// <param name="metadata">The model metadata.</param>
         /// <param name="attribute">The expressive assertion attribute instance.</param>
+        /// <param name="memoryCache">An IMemoryCache instance, scoped to the process.</param>
+        /// <param name="requestCache">A RequestCache instance, scoped to the request.</param>
         /// <exception cref="System.ComponentModel.DataAnnotations.ValidationException"></exception>
-        public AssertThatValidator(ModelMetadata metadata, AssertThatAttribute attribute)
-            : base(metadata, attribute)
+        public AssertThatValidator(ModelMetadata metadata, AssertThatAttribute attribute, IMemoryCache memoryCache, IMemoryCache requestCache)
+            : base(metadata, attribute, memoryCache, requestCache)
         {
         }
 

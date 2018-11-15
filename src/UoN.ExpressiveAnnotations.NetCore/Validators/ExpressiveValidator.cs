@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.Extensions.Caching.Memory;
 using UoN.ExpressiveAnnotations.NetCore.Attributes;
 using UoN.ExpressiveAnnotations.NetCore.Caching;
 
@@ -23,14 +24,21 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
     /// <typeparam name="T">Any type derived from <see cref="ExpressiveAttribute" /> class.</typeparam>
     public abstract class ExpressiveValidator<T> where T : ExpressiveAttribute
     {
+        private readonly IMemoryCache _requestCache;
+
+
         /// <summary>
         ///     Constructor for expressive model validator.
         /// </summary>
         /// <param name="metadata">The model metadata.</param>
         /// <param name="attribute">The expressive attribute instance.</param>
+        /// <param name="processCache">An IMemoryCache instance, scoped to the process.</param>
+        /// <param name="requestCache">A RequestCache instance, scoped to the request.</param>
         /// <exception cref="System.ComponentModel.DataAnnotations.ValidationException"></exception>
-        protected ExpressiveValidator(ModelMetadata metadata, T attribute)
+        protected ExpressiveValidator(ModelMetadata metadata, T attribute, IMemoryCache processCache, IMemoryCache requestCache)
         {
+            _requestCache = requestCache;
+
             try
             {
                 Debug.WriteLine($"[ctor entry] process: {Process.GetCurrentProcess().Id}, thread: {Thread.CurrentThread.ManagedThreadId}");
@@ -40,11 +48,30 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
                 AttributeWeakId = $"{typeof(T).FullName}.{fieldId}".ToLowerInvariant();
                 FieldName = metadata.PropertyName;
 
-                var item = ProcessStorage<string, CacheItem>.GetOrAdd(AttributeFullId, _ => // map cache is based on static dictionary, set-up once for entire application instance
-                {                                                                           // (by design, no reason to recompile once compiled expressions)
+                // Parsing the attributes and constructing the maps can be quite expensive. They only need to be parsed once for the
+                // application, so the results of this parsing are stored in a cache scoped to the process.
+                //
+                // Note that, unlike the implementation in the original Expressive Annotations (which used Lazy<T> and a ConcurrentDictionary),
+                // this use of IMemoryCache for caching the data about parsed attributes doesn't guarantee that the cache entries will only
+                // be added once. If a second concurrent request triggers parsing of a set of attributes before the first request has completed,
+                // one of them will end up overwriting the cache entries of the other, so parsing will happen twice. (Or more times, if there
+                // are multiple requests). But once one cache entry has been added, subsequent requests for the same attribute will get the
+                // parsing results from the cache.
+                //
+                // Unless the attributes are extremely numerous, complex and slow to parse, causing performance problems the first time the
+                // application is used after starting, this shouldn't really be a problem.
+                // 
+                // Good discussion about similar issues here:
+                // https://www.hanselman.com/blog/EyesWideOpenCorrectCachingIsAlwaysHard.aspx
+
+                var item = processCache.GetOrCreate(AttributeFullId, entry =>
+                {
                     Debug.WriteLine($"[cache add] process: {Process.GetCurrentProcess().Id}, thread: {Thread.CurrentThread.ManagedThreadId}");
 
+                    entry.SetPriority(CacheItemPriority.NeverRemove);
+
                     IDictionary<string, Expression> fields = null;
+
                     attribute.Compile(metadata.ContainerType, parser =>
                     {
                         fields = parser.GetFields();
@@ -73,7 +100,7 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
                             ParsersMap.Add(new KeyValuePair<string, string>(metadata.PropertyName, valueParser.ParserName));
                     }
 
-                    return new CacheItem
+                    return new ProcessCacheItem
                     {
                         FieldsMap = FieldsMap,
                         ConstsMap = ConstsMap,
@@ -229,16 +256,15 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
 
         private string AllocateSuffix()
         {
-            var count = RequestStorage.Get<int>(AttributeWeakId);
+            if (!_requestCache.TryGetValue(AttributeWeakId, out int count))
+            {
+                count = 0;
+            }
+
             count++;
             AssertAttribsQuantityAllowed(count);
-            RequestStorage.Set(AttributeWeakId, count);
+            _requestCache.Set(AttributeWeakId, count);
             return count == 1 ? string.Empty : char.ConvertFromUtf32(95 + count); // single lowercase letter from latin alphabet or an empty string
-        }
-
-        private void ResetSuffixAllocation()
-        {
-            RequestStorage.Remove(AttributeWeakId);
         }
 
         private void AssertClientSideCompatibility() // verify client-side compatibility of current expression
@@ -295,8 +321,10 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
         {
             const int max = 27;
             if (count > max)
+            {
                 throw new InvalidOperationException(
                     $"No more than {max} unique attributes of the same type can be applied for a single field or property.");
+            }
         }
     }
 }
