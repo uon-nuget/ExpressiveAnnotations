@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageVersion>1.0.0-beta1</PackageVersion>
+    <PackageVersion>1.0.0</PackageVersion>
 
     <Authors>UoN Application Development</Authors>
 
@@ -11,7 +11,7 @@ Fork of Jarosław Waliszko's Expressive Annotations .NET library, adding support
     </Description>
 
     <PackageReleaseNotes>
-This release fixes an issue in 0.1.0 where client-side validation only functioned for one annotation of the same type per property.
+This release simplifies the way that the package is configured in Startup.cs. The startup code required for previous versions of this package will not compile with this version. See the readme on github under 'Add code to Startup'.
     </PackageReleaseNotes>
 
     <Copyright>Copyright 2018 (c) University of Nottingham.</Copyright>
