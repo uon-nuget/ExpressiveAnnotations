@@ -29,7 +29,7 @@ To use Expressive Annotations in your .NET Core project:
 
 * Add the library to your project
 * Add the required javascript files to your project and include them in your layout or views
-* Add code to startup to configure an `HttpContextAccessor` for the `RequestStorage` class
+* Add ExpressiveAnnotations to the service collection in `Startup.ConfigureServices()`
 * Add validation attributes as annotations to the properties you want to validate
 
 ### Acquiring the library
@@ -73,18 +73,11 @@ When referencing the javascript files in your views or layout, note that `expres
 ```
 
 ### Add code to `Startup`
-In your project's `Startup.cs`, add the following to the end of `Configure()`:
+In your project's `Startup.cs`, add the following in `ConfigureServices()`:
 
 ```csharp
-    RequestStorage.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
+    services.AddExpressiveAnnotations();
 ```
-This gives Expressive Annotations' request storage static class access to the `HttpContextAccessor`, so that it can get the `HttpContext`, which is used to store the per-context cache. You should also add the following to `ConfigureServices()`:
-
-```csharp
-    services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-```
-
-This is necessary because the cacheing classes from Expressive Annotations - `ProcessStorage` and `RequestStorage` - have not yet been rewritten using .NET Core's `MemoryCache` service. It is intended that this should be done at some point, in which case the startup configuration above will no longer be required, although `startup.cs` will then need to provide the dependency injection and lifetime management for the rewritten cache services.
 
 ### Brief Examples of usage
 The [brief introductory examples](#what-are-a-brief-examples-of-usage) of how Expressive Annotations can be used, from Jarosław's original documentation, are still valid in UoN.ExpressiveAnnotations.NetCore. Models which use Expressive Annotations attributes will need:
@@ -104,9 +97,9 @@ In .NET Core this has been simplified a little: `ValidationAttribute` still work
 
 This is essentially the change implemented in this .NET Core Version of ExpressiveAnnotations. Although this means that separate Validator classes are no longer required, this implementation preserves the separation of the Validator classes from the Attribute classes, with the Attribute classes instantiating Validators and calling `AttachValidationRules()` on those Validators to add the data attributes to the context. A separate project for unobtrusive (client-side) validation is no longer necessary though, so the helper classes and methods from that project have been merged into the `UoN.ExpressiveAnnotations.NetCore` project.
 
-In addition, the solution contains a partial re-implementation in .NET Core of Jarosław's sample project. The .NET Core sample is incomplete and has only been partially reworked to follow .NET Core best practices. Not all of the controls work - the datepicker has not been implemented in the sample, for example - and the sample does produce some errors in the web developer console. But fundamentally the sample does demonstrate how Expressive Annotations can be hooked up - with functioning client-side validation - in a .NET Core 2.1 application, which is somewhat different from the way that Expressive Annotations is hooked up in a .NET Framework application.
+In addition, the solution contains a re-implementation in .NET Core of Jarosław's sample project. The .NET Core sample has only been partially reworked to follow .NET Core best practices. Note that not all of the controls work in exactly the same way as before - the datepicker has not been implemented in the .Net Core sample, for example.
 
-The `UoN.ExpressiveAnnotations.NetCore` solution has also been simplified by removing the supporting projects; separate samples for MvcWeb and MvvmDesktop applications are no longer relevant; and the test projects have been removed because tests have not yet been re-implemented in this solution.
+The `UoN.ExpressiveAnnotations.NetCore` solution has also been simplified by removing the supporting projects. Separate samples for MvcWeb and MvvmDesktop applications are no longer relevant and the test projects have been removed because tests have not yet been re-implemented in this solution.
 
 
 ## Contributing
@@ -174,7 +167,7 @@ Declarative validation when [compared](#declarative-vs-imperative-programming---
 
 * [**.NET Core sample**](./src/UoN.ExpressiveAnnotations.NetCoreSample)
 
-This sample project is a .NET Core 2.1 re-work of Jarosław's MvcWebSample with several features of that sample, and all tests, removed. A few parts of the project have been reworked to take advantage of new features of .NET Core, but only where required to get the project to run under .NET Core. As such, there is still some work to do to make this a true .NET Core project; it is at present merely a proof of concept to demonstrate how to use this .NET Core version of Expressive Annotations within a .NET Core application. The parts of the sample that have been removed do currently provoke some errors and warnings in the console.
+This sample project is a .NET Core 2.1 update of Jarosław's MvcWebSample. A few parts of the project have been reworked to take advantage of new features of .NET Core, but only where required to get the project to run under .NET Core. As such, there is still some work to do to make this a true .NET Core project; it is at present merely a proof of concept to demonstrate how to use this .NET Core version of Expressive Annotations within a .NET Core application.
 
 ### <a id="what-are-a-brief-examples-of-usage">What are a brief examples of usage?</a>
 
