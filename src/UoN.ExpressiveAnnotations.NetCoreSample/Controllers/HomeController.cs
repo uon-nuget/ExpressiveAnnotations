@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using UoN.ExpressiveAnnotations.NetCoreSample.Models;
 
@@ -44,6 +45,11 @@ namespace UoN.ExpressiveAnnotations.NetCoreSample.Controllers
         public async Task<ActionResult> Index(Query model)
         {
             HttpContext.Session.SetInt32("Postbacks", (HttpContext.Session.GetInt32("Postbacks") ?? 0) + 1);
+
+            // Suppress validation of this circular reference; for unknown reason, model binding is reporting
+            // 'Unvalidated' for this even though it previously worked just fine. We don't need to validate
+            // this field anyway because it's already going to be validated directly in the model.
+            ModelState["ContactDetails.Parent.GoAbroad"].ValidationState = ModelValidationState.Skipped;
 
             if (ModelState.IsValid)
             {
