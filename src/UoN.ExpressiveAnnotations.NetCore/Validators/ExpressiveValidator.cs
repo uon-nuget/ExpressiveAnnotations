@@ -1,4 +1,4 @@
-﻿/* https://github.com/uon-nuget/ExpressiveAnnotations
+/* https://github.com/uon-nuget/ExpressiveAnnotations
  * Original work Copyright (c) 2014 Jarosław Waliszko
  * Modified work Copyright (c) 2018 The University of Nottingham
  * Licensed MIT: http://opensource.org/licenses/MIT */
@@ -261,7 +261,14 @@ namespace UoN.ExpressiveAnnotations.NetCore.Validators
                 count = 0;
             }
 
-            count++;
+            // Added for issue in original repo: https://github.com/jwaliszko/ExpressiveAnnotations/issues/96
+            // See their commit for fixing here: https://github.com/jwaliszko/ExpressiveAnnotations/commit/ad078cccc63ca1d83464d55fd913a9dd44999907
+            if (!_requestCache.Get<bool>(AttributeFullId)) // attributes of the same TypeId should be filtered out at this stage from outside, so
+            {                                              // the only reason we still encounter duplicates means, they are applied in separate models (e.g. collection processing) - adapters names differentiation should be avoided
+                count++;
+                _requestCache.Set(AttributeFullId, true);
+            }
+
             AssertAttribsQuantityAllowed(count);
             _requestCache.Set(AttributeWeakId, count);
             return count == 1 ? string.Empty : char.ConvertFromUtf32(95 + count); // single lowercase letter from latin alphabet or an empty string
